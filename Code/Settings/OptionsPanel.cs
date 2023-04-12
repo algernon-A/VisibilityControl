@@ -5,21 +5,14 @@
 
 namespace VisibilityControl
 {
-    using AlgernonCommons;
-    using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
-    using UnityEngine;
 
     /// <summary>
     /// The mod's settings options panel.
     /// </summary>
     public class OptionsPanel : UIPanel
     {
-        // Layout constants.
-        private const float Margin = 5f;
-        private const float LeftMargin = 24f;
-
         /// <summary>
         /// Called by Unity before the first frame.
         /// Used to perform setup.
@@ -28,24 +21,16 @@ namespace VisibilityControl
         {
             base.Start();
 
-            // Add controls.
-            // Y position indicator.
-            float currentY = Margin;
+            // Add tabstrip.
+            AutoTabstrip tabStrip = AutoTabstrip.AddTabstrip(this, 0f, 0f, OptionsPanelManager<OptionsPanel>.PanelWidth, OptionsPanelManager<OptionsPanel>.PanelHeight, out _, tabHeight: 50f);
 
-            // Language choice.
-            UIDropDown languageDropDown = UIDropDowns.AddPlainDropDown(this, LeftMargin, currentY, Translations.Translate("LANGUAGE_CHOICE"), Translations.LanguageList, Translations.Index);
-            languageDropDown.eventSelectedIndexChanged += (control, index) =>
-            {
-                Translations.Index = index;
-                OptionsPanelManager<OptionsPanel>.LocaleChanged();
-            };
-            languageDropDown.parent.relativePosition = new Vector2(LeftMargin, currentY);
-            currentY += languageDropDown.parent.height + Margin;
+            // Add tabs and panels.
+            new GeneralOptions(tabStrip, 0);
+            new TransparencyOptions(tabStrip, 1);
 
-            // Logging checkbox.
-            UICheckBox loggingCheck = UICheckBoxes.AddPlainCheckBox(this, LeftMargin, currentY, Translations.Translate("DETAIL_LOGGING"));
-            loggingCheck.isChecked = Logging.DetailLogging;
-            loggingCheck.eventCheckChanged += (c, isChecked) => { Logging.DetailLogging = isChecked; };
+            // Select first tab.
+            tabStrip.selectedIndex = -1;
+            tabStrip.selectedIndex = 0;
         }
     }
 }

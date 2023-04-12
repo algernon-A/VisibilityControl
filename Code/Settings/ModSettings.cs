@@ -22,6 +22,18 @@ namespace VisibilityControl
         private static readonly string SettingsFileName = Path.Combine(ColossalFramework.IO.DataLocation.localApplicationData, "VisibilityControl.xml");
 
         /// <summary>
+        /// Gets or sets building visibility setttings for transparency LOD fixing.
+        /// </summary>
+        [XmlElement("BuildingTransparency")]
+        public BuildingTransparencyRecord BuildingTransparency { get; set; } = new BuildingTransparencyRecord();
+
+        /// <summary>
+        /// Gets or sets building visibility setttings for transparency LOD fixing.
+        /// </summary>
+        [XmlElement("PropTransparency")]
+        public PropTransparencyRecord PropTransparency { get; set; } = new PropTransparencyRecord();
+
+        /// <summary>
         /// Loads settings from file.
         /// </summary>
         internal static void Load() => XMLFileUtils.Load<ModSettings>(SettingsFileName);

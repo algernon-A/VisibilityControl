@@ -11,6 +11,7 @@ namespace VisibilityControl
     using ColossalFramework.UI;
     using UnityEngine;
     using VisibilityControl.AdditiveShader;
+    using VisibilityControl.Patches;
 
     /// <summary>
     /// Prefab management.
@@ -25,6 +26,10 @@ namespace VisibilityControl
             // Additive shader assets.
             List<ManagedPrefab> additiveAssets = new List<ManagedPrefab>();
 
+            // Clear transparent LOD fix records.
+            TransparentLODFix.ManagedBuildings.Clear();
+            TransparentLODFix.ManagedProps.Clear();
+
             // Iterate through all loaded prefabs.
             PrefabInfo[] prefabs = Resources.FindObjectsOfTypeAll<PrefabInfo>();
             for (int i = 0; i < prefabs.Length; ++i)
@@ -34,21 +39,44 @@ namespace VisibilityControl
                     PrefabInfo prefab = prefabs[i];
                     if (prefab is PropInfo prop)
                     {
-                        // Prop - check for additive shader.
-                        if (prop.m_mesh?.name is string meshName && ShaderManager.HasShaderKey(meshName))
+                        // Prop - check for valid mesh.
+                        if (prop.m_mesh is Mesh mesh)
                         {
-                            additiveAssets.Add(new ManagedPrefab(prop));
+                            // Check for additive shader.
+                            if (mesh.name is string meshName && ShaderManager.HasShaderKey(meshName))
+                            {
+                                additiveAssets.Add(new ManagedPrefab(prop));
+                            }
+
+                            // Check for rotors shader for transparent LOD fix.
+                            if (HasRotorsShader(prop.m_material))
+                            {
+                                Logging.Message("adding rotors shader LOD fix for prop ", prop.name);
+                                TransparentLODFix.ManagedProps.Add(prop);
+                            }
                         }
                     }
                     else if (prefab is BuildingInfo building)
                     {
-                        // Building - check for additive shader.
-                        if (building.m_mesh?.name is string meshName && ShaderManager.HasShaderKey(meshName))
+                        // Building - check for valid mesh.
+                        if (building.m_mesh is Mesh mesh)
                         {
-                            additiveAssets.Add(new ManagedPrefab(building, false));
+                            // Check for additive shader.
+                            if (mesh.name is string meshName && ShaderManager.HasShaderKey(meshName))
+                            {
+                                additiveAssets.Add(new ManagedPrefab(building, false));
+                            }
+
+                            // Check for rotors shader for transparent LOD fix.
+                            if (HasRotorsShader(building.m_material))
+                            {
+                                Logging.Message("adding rotors shader LOD fix for building ", building.name);
+                                TransparentLODFix.ManagedBuildings.Add(building);
+                            }
                         }
 
                         // Prop LODs don't support the additive shader, so the maximum prop visibility distance needs to be extended instead if the building contains additive shader props.
+                        // Mesh isn't relevant here, e.g. empty container building.
                         if (building.m_props != null && ShaderManager.ContainsShaderProps(building))
                         {
                             additiveAssets.Add(new ManagedPrefab(building, true));
@@ -56,10 +84,21 @@ namespace VisibilityControl
                     }
                     else if (prefab is BuildingInfoSub buildingSub)
                     {
-                        // Sub-building - check for additive shader.
-                        if (buildingSub.m_mesh?.name is string meshName && ShaderManager.HasShaderKey(meshName))
+                        // Sub-building - check for valid mesh.
+                        if (buildingSub.m_mesh is Mesh mesh)
                         {
-                            additiveAssets.Add(new ManagedPrefab(buildingSub));
+                            // Sub-building - check for additive shader.
+                            if (mesh.name is string meshName && ShaderManager.HasShaderKey(meshName))
+                            {
+                                additiveAssets.Add(new ManagedPrefab(buildingSub));
+                            }
+
+                            // Check for rotors shader for transparent LOD fix.
+                            if (HasRotorsShader(buildingSub.m_material))
+                            {
+                                Logging.Message("adding rotors shader LOD fix for sub-building ", buildingSub.name);
+                                TransparentLODFix.ManagedSubBuildings.Add(buildingSub);
+                            }
                         }
                     }
                     else if (prefab is VehicleInfoSub vehicleSub)
@@ -103,6 +142,25 @@ namespace VisibilityControl
                 // Start additive shader coroutine.
                 UIView.GetAView().StartCoroutine(ShaderManager.ShaderCoroutine());
             }
+
+            // Refresh LODs for any transparent lod fix prefabs.
+            TransparentLODFix.RefreshBuildingPrefabs();
+            TransparentLODFix.RefreshPropPrefabs();
+        }
+
+        /// <summary>
+        /// Checks if the given <see cref="Material"/> uses the rotors shader.
+        /// </summary>
+        /// <param name="material"><see cref="Material"/> to check.</param>
+        /// <returns><c>true</c> if the given <see cref="Material"/> uses the rotors shader, <c>false</c> otherwise.</returns>
+        private static bool HasRotorsShader(Material material)
+        {
+            if (material?.shader is Shader shader && shader)
+            {
+                return shader.name.Equals("Custom/Vehicles/Vehicle/Rotors");
+            }
+
+            return false;
         }
     }
 }
