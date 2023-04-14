@@ -9,7 +9,9 @@ namespace VisibilityControl
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
     using static VisibilityControl.Patches.LodDistanceBuildings;
+    using static VisibilityControl.Patches.LodDistanceNets;
     using static VisibilityControl.Patches.LodDistanceTrees;
+    using static VisibilityControl.Patches.LodDistanceVehicles;
 
     /// <summary>
     /// Options panel for setting transparency LOD fix visibility options.
@@ -19,13 +21,18 @@ namespace VisibilityControl
         // Layout constants.
         private const float Margin = 5f;
         private const float LeftMargin = 24f;
-        private const float GroupMargin = 40f;
-        private const float TitleMargin = 55f;
+        private const float GroupMargin = 35f;
+        private const float TitleMargin = 50f;
+        private const float SliderMargin = 60f;
 
         // Panel components.
         private readonly UISlider _treeDistanceSlider;
         private readonly UISlider _buildingMinDistanceSlider;
         private readonly UISlider _buildingMultSlider;
+        private readonly UISlider _netMultSlider;
+        private readonly UISlider _netMinDistanceSlider;
+        private readonly UISlider _vehicleMultSlider;
+        private readonly UISlider _vehicleMinDistanceSlider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LODDistanceOptions"/> class.
@@ -38,40 +45,72 @@ namespace VisibilityControl
             UIPanel panel = UITabstrips.AddTextTab(tabStrip, Translations.Translate("OPTIONS_ULOD"), tabIndex, out UIButton _, autoLayout: false);
 
             // Y position indicator.
-            float currentY = GroupMargin;
+            float currentY = 0f;
 
             // Header width.
             float headerWidth = OptionsPanelManager<OptionsPanel>.PanelWidth - (Margin * 2f);
 
             // Building visibility options.
-            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_BUILDING"));
+            UISpacers.AddTitle(panel, Margin, currentY, Translations.Translate("OPTIONS_BUILDINGS"));
             currentY += TitleMargin;
 
             _buildingMinDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinBuildingDistance, MaxBuildingDistance, 100f, BuildingMinDistance);
             _buildingMinDistanceSlider.eventValueChanged += (c, value) => BuildingMinDistance = value;
             _buildingMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
-            currentY += _buildingMinDistanceSlider.parent.height + Margin;
+            currentY += SliderMargin;
 
             _buildingMultSlider = UISliders.AddPlainSliderWithValue(panel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinBuildingMult, MaxBuildingMult, 0.5f, BuildingMultiplier);
             _buildingMultSlider.eventValueChanged += (c, value) => BuildingMultiplier = value;
             _buildingMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
-            currentY += _buildingMultSlider.parent.height + Margin;
+            currentY += SliderMargin;
+
+            // Network visibility options.
+            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_NETS"));
+            currentY += TitleMargin;
+
+            _netMinDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinNetDistance, MaxNetDistance, 100f, NetMinDistance);
+            _netMinDistanceSlider.eventValueChanged += (c, value) => NetMinDistance = value;
+            _netMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
+            currentY += SliderMargin;
+
+            _netMultSlider = UISliders.AddPlainSliderWithValue(panel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinNetMult, MaxNetMult, 0.5f, NetMultiplier);
+            _netMultSlider.eventValueChanged += (c, value) => NetMultiplier = value;
+            _netMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
+            currentY += SliderMargin;
+
+            // Vehicle visibility options.
+            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_VEHICLES"));
+            currentY += TitleMargin;
+
+            _vehicleMinDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinVehicleDistance, MaxVehicleDistance, 100f, VehicleMinDistance);
+            _vehicleMinDistanceSlider.eventValueChanged += (c, value) => VehicleMinDistance = value;
+            _vehicleMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
+            currentY += SliderMargin;
+
+            _vehicleMultSlider = UISliders.AddPlainSliderWithValue(panel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinVehicleMult, MaxVehicleMult, 0.5f, VehicleMultiplier);
+            _vehicleMultSlider.eventValueChanged += (c, value) => VehicleMultiplier = value;
+            _vehicleMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
+            currentY += SliderMargin;
 
             // Tree visibility options.
-            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_TREE"));
+            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_TREES"));
             currentY += TitleMargin;
 
             _treeDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("TREE_DISTANCE"), MinTreeDistance, MaxTreeDistance, 100f, TreeLodDistance);
             _treeDistanceSlider.eventValueChanged += (c, value) => TreeLodDistance = value;
-            currentY += _treeDistanceSlider.parent.height + GroupMargin;
+            currentY += SliderMargin;
 
             // Rest to defaults.
-            UIButton defaultsButton = UIButtons.AddButton(panel, LeftMargin, currentY, Translations.Translate("RESET_DEFAULT"), 300f);
+            UIButton defaultsButton = UIButtons.AddButton(panel, LeftMargin, currentY + GroupMargin, Translations.Translate("RESET_DEFAULT"), 300f);
             defaultsButton.eventClicked += (c, p) =>
             {
                 _buildingMinDistanceSlider.value = DefaultBuildingMinDistance;
                 _buildingMultSlider.value = DefaultBuildingMult;
                 _treeDistanceSlider.value = DefaultTreeDistance;
+                _netMinDistanceSlider.value = DefaultNetMinDistance;
+                _netMultSlider.value = DefaultNetMult;
+                _vehicleMinDistanceSlider.value = DefaultVehicleMinDistance;
+                _vehicleMultSlider.value = DefaultVehicleMult;
             };
         }
     }

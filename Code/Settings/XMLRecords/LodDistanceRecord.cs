@@ -7,7 +7,9 @@ namespace VisibilityControl
 {
     using System.Xml.Serialization;
     using static VisibilityControl.Patches.LodDistanceBuildings;
+    using static VisibilityControl.Patches.LodDistanceNets;
     using static VisibilityControl.Patches.LodDistanceTrees;
+    using static VisibilityControl.Patches.LodDistanceVehicles;
 
     /// <summary>
     /// Class to handle ULOD settings.
@@ -32,6 +34,30 @@ namespace VisibilityControl
         /// </summary>
         [XmlElement("BuildingMultiplier")]
         public float XMLBuildingMultiplier { get => BuildingMultiplier; set => BuildingMultiplier = value; }
+
+        /// <summary>
+        /// Gets or sets the minimum network LOD visibility distance.
+        /// </summary>
+        [XmlElement("NetworkMinDistance")]
+        public float XMLNetMinDistance { get => NetMinDistance; set => NetMinDistance = value; }
+
+        /// <summary>
+        /// Gets or sets the network LOD distance multiplier.
+        /// </summary>
+        [XmlElement("NetworkMultiplier")]
+        public float XMLNetMultiplier { get => NetMultiplier; set => NetMultiplier = value; }
+
+        /// <summary>
+        /// Gets or sets the minimum vehicle LOD visibility distance.
+        /// </summary>
+        [XmlElement("VehicleMinDistance")]
+        public float XMLVehicleMinDistance { get => VehicleMinDistance; set => VehicleMinDistance = value; }
+
+        /// <summary>
+        /// Gets or sets the vehicle LOD distance multiplier.
+        /// </summary>
+        [XmlElement("VehicleMultiplier")]
+        public float XMLVehicleMultiplier { get => VehicleMultiplier; set => VehicleMultiplier = value; }
 
         /// <summary>
         /// Gets or sets the tree LOD visibility distance.

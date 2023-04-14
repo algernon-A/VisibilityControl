@@ -102,7 +102,7 @@ namespace VisibilityControl.Patches
         /// <param name="__instance"><see cref="BuildingInfo"/> instance.</param>
         [HarmonyPatch(typeof(BuildingInfo), nameof(BuildingInfo.RefreshLevelOfDetail))]
         [HarmonyPostfix]
-        public static void BuildingInfoRefreshLOD(BuildingInfo __instance)
+        private static void BuildingRefreshLOD(BuildingInfo __instance)
         {
             // Only applies to instances with LODs.
             if (__instance.m_lodMesh != null)
@@ -118,7 +118,7 @@ namespace VisibilityControl.Patches
         /// <param name="__instance"><see cref="BuildingInfoSub"/> instance.</param>
         [HarmonyPatch(typeof(BuildingInfoSub), nameof(BuildingInfoSub.RefreshLevelOfDetail))]
         [HarmonyPostfix]
-        public static void BuildingInfoSubRefreshLOD(BuildingInfoSub __instance)
+        private static void BuildingSubRefreshLOD(BuildingInfoSub __instance)
         {
             // Only applies to instances with LODs.
             if (__instance.m_lodMesh != null)
@@ -136,7 +136,7 @@ namespace VisibilityControl.Patches
         /// <param name="maxInstanceDistance">Maximum instance visibility distance.</param>
         [HarmonyPatch(typeof(BuildingAI), nameof(BuildingAI.PopulateGroupData))]
         [HarmonyPostfix]
-        public static void BuildingPopulateGroupData(BuildingAI __instance, int layer, ref float maxInstanceDistance)
+        private static void BuildingPopulateGroupData(BuildingAI __instance, int layer, ref float maxInstanceDistance)
         {
             // Ensure correct layer.
             if (__instance.m_info.m_prefabDataLayer == layer)

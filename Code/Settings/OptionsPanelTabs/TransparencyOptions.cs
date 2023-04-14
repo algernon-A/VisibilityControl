@@ -47,7 +47,7 @@ namespace VisibilityControl
             float headerWidth = OptionsPanelManager<OptionsPanel>.PanelWidth - (Margin * 2f);
 
             // Building visibility options.
-            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_BUILDING"));
+            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_BUILDINGS"));
             currentY += TitleMargin;
 
             _buildingFallbackDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("FALLBACK_DISTANCE"), MinFallbackDistance, MaxFallbackDistance, 100f, BuildingFallbackRenderDistance);
@@ -66,7 +66,7 @@ namespace VisibilityControl
             currentY += _buildingLodTransitionSlider.parent.height + Margin;
 
             // Prop visibility options.
-            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_PROP"));
+            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_PROPS"));
             currentY += TitleMargin;
 
             _propFallbackDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("FALLBACK_DISTANCE"), MinFallbackDistance, MaxFallbackDistance, 1000f, PropFallbackRenderDistance);

@@ -54,32 +54,12 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Gets or sets the network LOD visibility distance.
-        /// </summary>
-        internal static float NetLodDistance
-        {
-            get => s_treeDistance;
-            set
-            {
-                // Enforce bounds.
-                s_treeDistance = Mathf.Clamp(value, MinTreeDistance, MaxTreeDistance);
-
-                // Refresh prefabs if game is loaded.
-                if (Loading.IsLoaded)
-                {
-                    PrefabManager.RefreshLODs<TreeInfo>();
-                    PrefabManager.UpdateRenderGroups(TreeManager.instance.m_treeLayer);
-                }
-            }
-        }
-
-        /// <summary>
         /// Harmony postfix to <see cref="TreeInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
         /// </summary>
         /// <param name="__instance"><see cref="TreeInfo"/> instance.</param>
         [HarmonyPatch(typeof(TreeInfo), nameof(TreeInfo.RefreshLevelOfDetail))]
         [HarmonyPostfix]
-        public static void TreeRefreshLOD(TreeInfo __instance)
+        private static void TreeRefreshLOD(TreeInfo __instance)
         {
             __instance.m_lodRenderDistance = TreeLodDistance;
         }
@@ -92,7 +72,7 @@ namespace VisibilityControl.Patches
         /// <param name="maxInstanceDistance">Maximum instance visibility distance.</param>
         [HarmonyPatch(typeof(TreeManager), nameof(TreeManager.PopulateGroupData))]
         [HarmonyPostfix]
-        public static void TreePopulateGroupData(TreeManager __instance, int layer, ref float maxInstanceDistance)
+        private static void TreePopulateGroupData(TreeManager __instance, int layer, ref float maxInstanceDistance)
         {
             // Ensure correct layer.
             if (layer == __instance.m_treeLayer)
