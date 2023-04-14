@@ -8,7 +8,6 @@ namespace VisibilityControl
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
-    using UnityEngine;
     using static VisibilityControl.Patches.TransparentLODFix;
 
     /// <summary>
@@ -23,13 +22,13 @@ namespace VisibilityControl
         private const float TitleMargin = 55f;
 
         // Panel components.
-        private UISlider _buildingFallbackDistanceSlider;
-        private UISlider _buildingMinimumDistanceSlider;
-        private UISlider _buildingLodTransitionSlider;
-        private UISlider _propFallbackDistanceSlider;
-        private UISlider _propMinimumDistanceSlider;
-        private UISlider _propDistanceMultiplierSlider;
-        private UISlider _propLodTransitionSlider;
+        private readonly UISlider _buildingFallbackDistanceSlider;
+        private readonly UISlider _buildingMinimumDistanceSlider;
+        private readonly UISlider _buildingLodTransitionSlider;
+        private readonly UISlider _propFallbackDistanceSlider;
+        private readonly UISlider _propMinimumDistanceSlider;
+        private readonly UISlider _propDistanceMultiplierSlider;
+        private readonly UISlider _propLodTransitionSlider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TransparencyOptions"/> class.

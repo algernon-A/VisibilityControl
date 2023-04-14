@@ -275,8 +275,8 @@ namespace VisibilityControl.Patches
                 __instance.m_minLodDistance = __instance.m_maxLodDistance = (float)((Mathf.Sqrt(__instance.m_generatedInfo.m_triangleArea) * distanceMultiplier) + s_buildingMinimumDistance);
             }
 
-            __instance.m_minLodDistance = Mathf.Max(s_buildingFallbackRenderDistance, __instance.m_minLodDistance);  //HRE
-            __instance.m_maxLodDistance = Mathf.Max(s_buildingFallbackRenderDistance, __instance.m_maxLodDistance); //HRE
+            __instance.m_minLodDistance = Mathf.Max(s_buildingFallbackRenderDistance, __instance.m_minLodDistance);
+            __instance.m_maxLodDistance = Mathf.Max(s_buildingFallbackRenderDistance, __instance.m_maxLodDistance);
 
             // Don't execute original method if we've adjusted the visibility distances.
             return false;
@@ -314,8 +314,8 @@ namespace VisibilityControl.Patches
                 __instance.m_minLodDistance = __instance.m_maxLodDistance = (float)((Mathf.Sqrt(__instance.m_generatedInfo.m_triangleArea) * distanceMultiplier) + s_buildingMinimumDistance);
             }
 
-            __instance.m_minLodDistance = Mathf.Max(s_buildingFallbackRenderDistance, __instance.m_minLodDistance);  //HRE
-            __instance.m_maxLodDistance = Mathf.Max(s_buildingFallbackRenderDistance, __instance.m_maxLodDistance); //HRE
+            __instance.m_minLodDistance = Mathf.Max(s_buildingFallbackRenderDistance, __instance.m_minLodDistance);
+            __instance.m_maxLodDistance = Mathf.Max(s_buildingFallbackRenderDistance, __instance.m_maxLodDistance);
 
             // Don't execute original method if we've adjusted the visibility distances.
             return false;

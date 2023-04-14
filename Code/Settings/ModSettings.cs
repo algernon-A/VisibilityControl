@@ -34,6 +34,12 @@ namespace VisibilityControl
         public PropTransparencyRecord PropTransparency { get; set; } = new PropTransparencyRecord();
 
         /// <summary>
+        /// Gets or sets settings for LOD distance adjustment.
+        /// </summary>
+        [XmlElement("LodDistance")]
+        public LodDistanceRecord LodDistance { get; set; } = new LodDistanceRecord();
+
+        /// <summary>
         /// Loads settings from file.
         /// </summary>
         internal static void Load() => XMLFileUtils.Load<ModSettings>(SettingsFileName);

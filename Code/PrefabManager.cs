@@ -8,6 +8,7 @@ namespace VisibilityControl
     using System;
     using System.Collections.Generic;
     using AlgernonCommons;
+    using ColossalFramework;
     using ColossalFramework.UI;
     using UnityEngine;
     using VisibilityControl.AdditiveShader;
@@ -146,6 +147,54 @@ namespace VisibilityControl
             // Refresh LODs for any transparent lod fix prefabs.
             TransparentLODFix.RefreshBuildingPrefabs();
             TransparentLODFix.RefreshPropPrefabs();
+        }
+
+        /// <summary>
+        /// Refresh the LODs for all prefabs of the specified type.
+        /// </summary>
+        /// <typeparam name="TPrefab">Prefab type.</typeparam>
+        internal static void RefreshLODs<TPrefab>()
+            where TPrefab : PrefabInfo
+        {
+            // Iterate through all loaded prefabs of the specified type.
+            uint prefabCount = (uint)PrefabCollection<TPrefab>.LoadedCount();
+            for (uint i = 0; i < prefabCount; ++i)
+            {
+                // Refresh LODs for all valid prefabs.
+                PrefabInfo prefab = PrefabCollection<TPrefab>.GetLoaded(i);
+                if (prefab)
+                {
+                    prefab.RefreshLevelOfDetail();
+                }
+            }
+
+            // Also refresh any edit prefab.
+            if (ToolsModifierControl.toolController && ToolsModifierControl.toolController.m_editPrefabInfo is TPrefab)
+            {
+                ToolsModifierControl.toolController.m_editPrefabInfo.RefreshLevelOfDetail();
+            }
+        }
+
+        /// <summary>
+        /// Update all <see cref="RenderGroup"/> for the given layer.
+        /// </summary>
+        /// <param name="layer">Render layer index.</param>
+        internal static void UpdateRenderGroups(int layer)
+        {
+            // Local reference.
+            RenderManager renderManager = Singleton<RenderManager>.instance;
+
+            // Iterate throuh all render groups.
+            foreach (RenderGroup renderGroup in renderManager.m_groups)
+            {
+                // Null check.
+                if (renderGroup != null)
+                {
+                    // Refresh this group.
+                    renderGroup.SetLayerDataDirty(layer);
+                    renderGroup.UpdateMeshData();
+                }
+            }
         }
 
         /// <summary>
