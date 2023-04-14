@@ -6,7 +6,8 @@
 namespace VisibilityControl
 {
     using System.Xml.Serialization;
-    using static VisibilityControl.Patches.LodDistance;
+    using static VisibilityControl.Patches.LodDistanceBuildings;
+    using static VisibilityControl.Patches.LodDistanceTrees;
 
     /// <summary>
     /// Class to handle ULOD settings.

@@ -1,4 +1,4 @@
-﻿// <copyright file="LodDistance.cs" company="algernon (K. Algernon A. Sheppard)">
+﻿// <copyright file="LodDistanceBuildings.cs" company="algernon (K. Algernon A. Sheppard)">
 // Copyright (c) algernon (K. Algernon A. Sheppard). All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
@@ -9,27 +9,22 @@ namespace VisibilityControl.Patches
     using UnityEngine;
 
     /// <summary>
-    /// Harmony patches to adjust LOD visibility distance ranges.
+    /// Harmony patches to adjust building LOD visibility distance ranges.
     /// </summary>
     [HarmonyPatch]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony")]
-    internal static class LodDistance
+    internal static class LodDistanceBuildings
     {
         /// <summary>
-        /// Minimum permitted LOD visiblity distance.
+        /// Minimum permitted building LOD visiblity distance.
+        /// This matches the minimum bounds check of 1000f for buildings in the game's code.
         /// </summary>
-        internal const float MinLodDistance = 0f;
+        internal const float MinBuildingDistance = 1000f;
 
         /// <summary>
         /// Maximum permitted LOD visibility distance.
         /// </summary>
-        internal const float MaxLodDistance = 10000f;
-
-        /// <summary>
-        /// Minimum permitted building visiblity distance.
-        /// This matches the minimum bounds check of 1000f for buildings in the game's code.
-        /// </summary>
-        internal const float MinBuildingDistance = 1000f;
+        internal const float MaxBuildingDistance = 10000f;
 
         /// <summary>
         /// Default minimum building LOD distance.
@@ -51,15 +46,9 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal const float MaxBuildingMult = 10f;
 
-        /// <summary>
-        /// Default tree LOD visibility distance.  Based on game settings at highest level of detail (4f * 300f).
-        /// </summary>
-        internal const float DefaultTreeDistance = 1200f;
-
         // LOD visibility distance modifiers.
         private static float s_buildingMinDistance = DefaultBuildingMinDistance;
         private static float s_buildingMult = DefaultBuildingMult;
-        private static float s_treeDistance = DefaultTreeDistance;
 
         /// <summary>
         /// Gets or sets the minimum building LOD visibility distance.
@@ -72,7 +61,7 @@ namespace VisibilityControl.Patches
             set
             {
                 // Enforce bounds.
-                s_buildingMinDistance = Mathf.Clamp(value, MinBuildingDistance, MaxLodDistance);
+                s_buildingMinDistance = Mathf.Clamp(value, MinBuildingDistance, MaxBuildingDistance);
 
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
@@ -103,26 +92,6 @@ namespace VisibilityControl.Patches
                     PrefabManager.RefreshLODs<BuildingInfo>();
                     PrefabManager.RefreshLODs<BuildingInfoSub>();
                     PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Buildings"));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the tree LOD visibility distance.
-        /// </summary>
-        internal static float TreeLodDistance
-        {
-            get => s_treeDistance;
-            set
-            {
-                // Enforce bounds.
-                s_treeDistance = Mathf.Clamp(value, MinLodDistance, MaxLodDistance);
-
-                // Refresh prefabs if game is loaded.
-                if (Loading.IsLoaded)
-                {
-                    PrefabManager.RefreshLODs<TreeInfo>();
-                    PrefabManager.UpdateRenderGroups(TreeManager.instance.m_treeLayer);
                 }
             }
         }
@@ -173,78 +142,6 @@ namespace VisibilityControl.Patches
             if (__instance.m_info.m_prefabDataLayer == layer)
             {
                 maxInstanceDistance = Mathf.Max(s_buildingMinDistance, maxInstanceDistance * s_buildingMult);
-            }
-        }
-
-        /// <summary>
-        /// Harmony postfix to <see cref="TreeInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
-        /// </summary>
-        /// <param name="__instance"><see cref="TreeInfo"/> instance.</param>
-        [HarmonyPatch(typeof(TreeInfo), nameof(TreeInfo.RefreshLevelOfDetail))]
-        [HarmonyPostfix]
-        public static void TreeRefreshLOD(TreeInfo __instance)
-        {
-            __instance.m_lodRenderDistance = TreeLodDistance;
-        }
-
-        /// <summary>
-        /// Harmony postfix to <see cref="TreeManager.PopulateGroupData"/> to apply custom LOD visibility distance modifers.
-        /// </summary>
-        /// <param name="__instance"><see cref="TreeManager"/> instance.</param>
-        /// <param name="layer">Render group layer.</param>
-        /// <param name="maxInstanceDistance">Maximum instance visibility distance.</param>
-        [HarmonyPatch(typeof(TreeManager), nameof(TreeManager.PopulateGroupData))]
-        [HarmonyPostfix]
-        public static void TreePopulateGroupData(TreeManager __instance, int layer, ref float maxInstanceDistance)
-        {
-            // Ensure correct layer.
-            if (layer == __instance.m_treeLayer)
-            {
-                maxInstanceDistance = Mathf.Max(maxInstanceDistance, TreeLodDistance);
-            }
-        }
-
-        /// <summary>
-        /// Harmony postfix to <see cref="NetManager.PopulateGroupData"/> to apply custom LOD visibility distance modifers.
-        /// </summary>
-        /// <param name="layer">Render group layer.</param>
-        /// <param name="maxInstanceDistance">Maximum instance visibility distance.</param>
-        [HarmonyPatch(typeof(NetManager), nameof(NetManager.PopulateGroupData))]
-        public static void NetPopulateGroupData(int layer, ref float maxInstanceDistance)
-        {
-            if (layer == LayerMask.NameToLayer("Road"))
-            {
-                maxInstanceDistance = Mathf.Max(maxInstanceDistance, NetDistance);
-            }
-        }
-
-        [HarmonyPatch(typeof(NetInfo), "RefreshLevelOfDetail")]
-        public static class NetInfoRefreshLevelOfDetailPatch
-        {
-            public static void Postfix(NetInfo __instance)
-            {
-                var lodTogglerFactor = TrueLodTogglerMod.ActiveConfig.NetworkLodDistance / 1000f;
-                if (__instance.m_segments != null)
-                {
-                    for (int i = 0; i < __instance.m_segments.Length; i++)
-                    {
-                        if (__instance.m_segments[i].m_lodMesh != null)
-                        {
-                            __instance.m_segments[i].m_lodRenderDistance *= lodTogglerFactor;
-                        }
-                    }
-                }
-                if (__instance.m_nodes != null)
-                {
-                    for (int j = 0; j < __instance.m_nodes.Length; j++)
-                    {
-                        if (__instance.m_nodes[j].m_lodMesh != null)
-                        {
-                            __instance.m_nodes[j].m_lodRenderDistance *= lodTogglerFactor;
-                        }
-                    }
-                }
-                __instance.m_maxPropDistance *= lodTogglerFactor;
             }
         }
     }

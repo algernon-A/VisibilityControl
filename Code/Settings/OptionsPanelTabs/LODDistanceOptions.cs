@@ -8,7 +8,8 @@ namespace VisibilityControl
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
-    using static VisibilityControl.Patches.LodDistance;
+    using static VisibilityControl.Patches.LodDistanceBuildings;
+    using static VisibilityControl.Patches.LodDistanceTrees;
 
     /// <summary>
     /// Options panel for setting transparency LOD fix visibility options.
@@ -42,19 +43,11 @@ namespace VisibilityControl
             // Header width.
             float headerWidth = OptionsPanelManager<OptionsPanel>.PanelWidth - (Margin * 2f);
 
-            // Tree visibility options.
-            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_TREE"));
-            currentY += TitleMargin;
-
-            _treeDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("TREE_DISTANCE"), MinLodDistance, MaxLodDistance, 100f, TreeLodDistance);
-            _treeDistanceSlider.eventValueChanged += (c, value) => TreeLodDistance = value;
-            currentY += _treeDistanceSlider.parent.height + Margin;
-
             // Building visibility options.
             UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_BUILDING"));
             currentY += TitleMargin;
 
-            _buildingMinDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinBuildingDistance, MaxLodDistance, 100f, BuildingMinDistance);
+            _buildingMinDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinBuildingDistance, MaxBuildingDistance, 100f, BuildingMinDistance);
             _buildingMinDistanceSlider.eventValueChanged += (c, value) => BuildingMinDistance = value;
             _buildingMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
             currentY += _buildingMinDistanceSlider.parent.height + Margin;
@@ -64,9 +57,20 @@ namespace VisibilityControl
             _buildingMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
             currentY += _buildingMultSlider.parent.height + Margin;
 
+            // Tree visibility options.
+            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_TREE"));
+            currentY += TitleMargin;
+
+            _treeDistanceSlider = UISliders.AddPlainSliderWithIntegerValue(panel, LeftMargin, currentY, Translations.Translate("TREE_DISTANCE"), MinTreeDistance, MaxTreeDistance, 100f, TreeLodDistance);
+            _treeDistanceSlider.eventValueChanged += (c, value) => TreeLodDistance = value;
+            currentY += _treeDistanceSlider.parent.height + GroupMargin;
+
+            // Rest to defaults.
             UIButton defaultsButton = UIButtons.AddButton(panel, LeftMargin, currentY, Translations.Translate("RESET_DEFAULT"), 300f);
             defaultsButton.eventClicked += (c, p) =>
             {
+                _buildingMinDistanceSlider.value = DefaultBuildingMinDistance;
+                _buildingMultSlider.value = DefaultBuildingMult;
                 _treeDistanceSlider.value = DefaultTreeDistance;
             };
         }
