@@ -29,7 +29,7 @@ namespace VisibilityControl.Patches
         /// Minimum permitted building visiblity distance.
         /// This matches the minimum bounds check of 1000f for buildings in the game's code.
         /// </summary>
-        internal const float MinBuildingDistance = 0f;
+        internal const float MinBuildingDistance = 1000f;
 
         /// <summary>
         /// Default minimum building LOD distance.
@@ -201,6 +201,50 @@ namespace VisibilityControl.Patches
             if (layer == __instance.m_treeLayer)
             {
                 maxInstanceDistance = Mathf.Max(maxInstanceDistance, TreeLodDistance);
+            }
+        }
+
+        /// <summary>
+        /// Harmony postfix to <see cref="NetManager.PopulateGroupData"/> to apply custom LOD visibility distance modifers.
+        /// </summary>
+        /// <param name="layer">Render group layer.</param>
+        /// <param name="maxInstanceDistance">Maximum instance visibility distance.</param>
+        [HarmonyPatch(typeof(NetManager), nameof(NetManager.PopulateGroupData))]
+        public static void NetPopulateGroupData(int layer, ref float maxInstanceDistance)
+        {
+            if (layer == LayerMask.NameToLayer("Road"))
+            {
+                maxInstanceDistance = Mathf.Max(maxInstanceDistance, NetDistance);
+            }
+        }
+
+        [HarmonyPatch(typeof(NetInfo), "RefreshLevelOfDetail")]
+        public static class NetInfoRefreshLevelOfDetailPatch
+        {
+            public static void Postfix(NetInfo __instance)
+            {
+                var lodTogglerFactor = TrueLodTogglerMod.ActiveConfig.NetworkLodDistance / 1000f;
+                if (__instance.m_segments != null)
+                {
+                    for (int i = 0; i < __instance.m_segments.Length; i++)
+                    {
+                        if (__instance.m_segments[i].m_lodMesh != null)
+                        {
+                            __instance.m_segments[i].m_lodRenderDistance *= lodTogglerFactor;
+                        }
+                    }
+                }
+                if (__instance.m_nodes != null)
+                {
+                    for (int j = 0; j < __instance.m_nodes.Length; j++)
+                    {
+                        if (__instance.m_nodes[j].m_lodMesh != null)
+                        {
+                            __instance.m_nodes[j].m_lodRenderDistance *= lodTogglerFactor;
+                        }
+                    }
+                }
+                __instance.m_maxPropDistance *= lodTogglerFactor;
             }
         }
     }
