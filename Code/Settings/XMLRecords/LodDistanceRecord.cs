@@ -8,6 +8,7 @@ namespace VisibilityControl
     using System.Xml.Serialization;
     using static VisibilityControl.Patches.LodDistanceBuildings;
     using static VisibilityControl.Patches.LodDistanceNets;
+    using static VisibilityControl.Patches.LodDistanceProps;
     using static VisibilityControl.Patches.LodDistanceTrees;
     using static VisibilityControl.Patches.LodDistanceVehicles;
 
@@ -58,6 +59,18 @@ namespace VisibilityControl
         /// </summary>
         [XmlElement("VehicleMultiplier")]
         public float XMLVehicleMultiplier { get => VehicleMultiplier; set => VehicleMultiplier = value; }
+
+        /// <summary>
+        /// Gets or sets the minimum prop LOD visibility distance.
+        /// </summary>
+        [XmlElement("PropMinDistance")]
+        public float XMLPropMinDistance { get => PropMinDistance; set => PropMinDistance = value; }
+
+        /// <summary>
+        /// Gets or sets the prop LOD distance multiplier.
+        /// </summary>
+        [XmlElement("PropMultiplier")]
+        public float XMLPropMultiplier { get => PropMultiplier; set => PropMultiplier = value; }
 
         /// <summary>
         /// Gets or sets the tree LOD visibility distance.
