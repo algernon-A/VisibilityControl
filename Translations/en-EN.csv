@@ -14,6 +14,8 @@
 "MIN_DISTANCE_TIP","Everything will be visible within this distance, regardless of size.","Slider tooltop in options panel."
 "DISTANCE_MULT","Distance multiplier","Slider in options panel."
 "DISTANCE_MULT_TIP","Modifies the calculated visibility range - higher values mean greater visibility.","Slider tooltop in options panel."
+"DECAL_DISTANCE","Decal fade distance","Slider in options panel."
+"DECAL_DISTANCE_TIP","Sets the distance at which decals will fade into the background.","Slider tooltop in options panel."
 "LOD_TRANSITION","LOD transition distance","Slider in options panel."
 "LOD_TRANSITION_TIP","The model will transition from normal to LOD at this percentage of the maximum visibility distance.","Slider tooltop in options panel."
 "TREE_DISTANCE","Tree LOD distance","Slider in options panel."

@@ -30,12 +30,13 @@ namespace VisibilityControl
         // Panel components.
         private readonly UISlider _buildingMinDistanceSlider;
         private readonly UISlider _buildingMultSlider;
-        private readonly UISlider _netMultSlider;
         private readonly UISlider _netMinDistanceSlider;
-        private readonly UISlider _vehicleMultSlider;
+        private readonly UISlider _netMultSlider;
         private readonly UISlider _vehicleMinDistanceSlider;
-        private readonly UISlider _propMultSlider;
+        private readonly UISlider _vehicleMultSlider;
         private readonly UISlider _propMinDistanceSlider;
+        private readonly UISlider _propMultSlider;
+        private readonly UISlider _decalDistanceSlider;
         private readonly UISlider _treeDistanceSlider;
 
         /// <summary>
@@ -66,13 +67,14 @@ namespace VisibilityControl
             {
                 _buildingMinDistanceSlider.value = DefaultBuildingMinDistance;
                 _buildingMultSlider.value = DefaultBuildingMult;
-                _treeDistanceSlider.value = DefaultTreeDistance;
                 _netMinDistanceSlider.value = DefaultNetMinDistance;
                 _netMultSlider.value = DefaultNetMult;
                 _vehicleMinDistanceSlider.value = DefaultVehicleMinDistance;
                 _vehicleMultSlider.value = DefaultVehicleMult;
                 _propMinDistanceSlider.value = DefaultPropMinDistance;
                 _propMultSlider.value = DefaultPropMult;
+                _decalDistanceSlider.value = DefaultDecalDistance;
+                _treeDistanceSlider.value = DefaultTreeDistance;
             };
 
             // Y position indicator.
@@ -135,6 +137,11 @@ namespace VisibilityControl
             _propMultSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinPropMult, MaxPropMult, 0.5f, PropMultiplier);
             _propMultSlider.eventValueChanged += (c, value) => PropMultiplier = value;
             _propMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
+            currentY += SliderMargin;
+
+            _decalDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DECAL_DISTANCE"), MinPropDistance, MaxPropDistance, 100f, DecalFadeDistance);
+            _decalDistanceSlider.eventValueChanged += (c, value) => DecalFadeDistance = value;
+            _decalDistanceSlider.parent.tooltip = Translations.Translate("DECAL_DISTANCE_TIP");
             currentY += SliderMargin;
 
             // Tree visibility options.

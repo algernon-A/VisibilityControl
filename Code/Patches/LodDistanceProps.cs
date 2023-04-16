@@ -47,9 +47,15 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal const float MaxPropMult = 10f;
 
+        /// <summary>
+        /// Default decal fade distance (game default).
+        /// </summary>
+        internal const float DefaultDecalDistance = 1000f;
+
         // LOD visibility distance modifiers.
         private static float s_propMinDistance = DefaultPropMinDistance;
         private static float s_propMult = DefaultPropMult;
+        private static float s_decalDistance = DefaultDecalDistance;
 
         /// <summary>
         /// Gets or sets the minimum prop LOD visibility distance.
@@ -90,6 +96,27 @@ namespace VisibilityControl.Patches
                 if (Loading.IsLoaded)
                 {
                     PrefabManager.RefreshLODs<PropInfo>();
+                    PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Props"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the decal fade distance.
+        /// </summary>
+        internal static float DecalFadeDistance
+        {
+            get => s_decalDistance;
+
+            set
+            {
+                // Enforce bounds.
+                s_decalDistance = Mathf.Clamp(value, MinPropDistance, MaxPropDistance);
+
+                // Refresh prefabs if game is loaded.
+                if (Loading.IsLoaded)
+                {
+                    PrefabManager.RefreshLODs<PropInfo>();
                 }
             }
         }
@@ -102,8 +129,21 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void PropRefreshLOD(PropInfo __instance)
         {
-            __instance.m_lodRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_lodRenderDistance * s_propMult);
-            __instance.m_maxRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_maxRenderDistance * s_propMult);
+            // Decal or prop?
+            if (__instance.m_isDecal && __instance.m_material && __instance.m_material.shader.name.Equals("Custom/Props/Decal/Blend"))
+            {
+                // Decal.
+                float convertedDistance = s_decalDistance * 1.1f;
+                double decalFadeFactor = 1d / (convertedDistance * convertedDistance);
+                __instance.m_lodRenderDistance = __instance.m_maxRenderDistance = convertedDistance;
+                __instance.m_material.SetFloat("_FadeDistanceFactor", (float)decalFadeFactor);
+            }
+            else
+            {
+                // Non-decal prop.
+                __instance.m_lodRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_lodRenderDistance * s_propMult);
+                __instance.m_maxRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_maxRenderDistance * s_propMult);
+            }
         }
 
         /// <summary>

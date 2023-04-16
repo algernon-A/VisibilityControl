@@ -73,6 +73,12 @@ namespace VisibilityControl
         public float XMLPropMultiplier { get => PropMultiplier; set => PropMultiplier = value; }
 
         /// <summary>
+        /// Gets or sets the decal fade distance.
+        /// </summary>
+        [XmlElement("DecalFadeDistance")]
+        public float XMLDecalFadeDistance { get => DecalFadeDistance; set => DecalFadeDistance = value; }
+
+        /// <summary>
         /// Gets or sets the tree LOD visibility distance.
         /// </summary>
         [XmlElement("TreeLodDistance")]

@@ -134,6 +134,17 @@ namespace VisibilityControl
 
                             break;
 
+                        case "TrueLodToggler":
+                            // Okay to just be disabled.
+                            if (plugin.isEnabled)
+                            {
+                                // ULOD.
+                                conflictDetected = true;
+                                conflictingModNames.Add("Ultimate Level Of Detail (ULOD)");
+                            }
+
+                            break;
+
                         case "VanillaGarbageBinBlocker":
                             // Garbage Bin Controller.
                             conflictDetected = true;
