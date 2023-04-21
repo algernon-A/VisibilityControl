@@ -7,6 +7,7 @@ namespace VisibilityControl
 {
     using System.IO;
     using System.Xml.Serialization;
+    using AlgernonCommons.Keybinding;
     using AlgernonCommons.XML;
 
     /// <summary>
@@ -38,6 +39,12 @@ namespace VisibilityControl
         /// </summary>
         [XmlElement("LodDistance")]
         public LodDistanceRecord LodDistance { get; set; } = new LodDistanceRecord();
+
+        /// <summary>
+        /// Gets or sets the LOD mode hotkey.
+        /// </summary>
+        [XmlElement("LodModeKey")]
+        public Keybinding LodModeKey { get => UIThreading.LodModeKey; set => UIThreading.LodModeKey = value; }
 
         /// <summary>
         /// Loads settings from file.

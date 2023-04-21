@@ -19,6 +19,32 @@ namespace VisibilityControl
     /// </summary>
     internal static class PrefabManager
     {
+        private static bool s_lodMode = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether LOD mod is active.
+        /// </summary>
+        internal static bool LodMode
+        {
+            get => s_lodMode;
+
+            set
+            {
+                // Don't do anything if no change.
+                if (s_lodMode != value)
+                {
+                    s_lodMode = value;
+
+                    // Refresh all visibility settings.
+                    LodDistanceBuildings.RefreshVisibility();
+                    LodDistanceNets.RefreshVisibility();
+                    LodDistanceTrees.RefreshVisibility();
+                    LodDistanceProps.RefreshVisibility();
+                    RefreshLODs<VehicleInfo>();
+                }
+            }
+        }
+
         /// <summary>
         /// Scans loaded prefabs for relevant shader information and performs any necessary actions.
         /// </summary>

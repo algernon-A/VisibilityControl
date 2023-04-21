@@ -56,7 +56,7 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static float BuildingMinDistance
         {
-            get => s_buildingMinDistance;
+            get => PrefabManager.LodMode ? 0 : s_buildingMinDistance;
 
             set
             {
@@ -66,9 +66,7 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<BuildingInfo>();
-                    PrefabManager.RefreshLODs<BuildingInfoSub>();
-                    PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Buildings"));
+                    RefreshVisibility();
                 }
             }
         }
@@ -89,11 +87,19 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<BuildingInfo>();
-                    PrefabManager.RefreshLODs<BuildingInfoSub>();
-                    PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Buildings"));
+                    RefreshVisibility();
                 }
             }
+        }
+
+        /// <summary>
+        /// Refreshes building visibility.
+        /// </summary>
+        internal static void RefreshVisibility()
+        {
+            PrefabManager.RefreshLODs<BuildingInfo>();
+            PrefabManager.RefreshLODs<BuildingInfoSub>();
+            PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Buildings"));
         }
 
         /// <summary>
@@ -107,8 +113,8 @@ namespace VisibilityControl.Patches
             // Only applies to instances with LODs.
             if (__instance.m_lodMesh != null)
             {
-                __instance.m_minLodDistance = Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult);
-                __instance.m_maxLodDistance = Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult);
+                __instance.m_minLodDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult);
+                __instance.m_maxLodDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult);
             }
         }
 
@@ -123,8 +129,8 @@ namespace VisibilityControl.Patches
             // Only applies to instances with LODs.
             if (__instance.m_lodMesh != null)
             {
-                __instance.m_minLodDistance = Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult);
-                __instance.m_maxLodDistance = Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult);
+                __instance.m_minLodDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult);
+                __instance.m_maxLodDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult);
             }
         }
 
@@ -141,7 +147,7 @@ namespace VisibilityControl.Patches
             // Ensure correct layer.
             if (__instance.m_info.m_prefabDataLayer == layer)
             {
-                maxInstanceDistance = Mathf.Max(s_buildingMinDistance, maxInstanceDistance * s_buildingMult);
+                maxInstanceDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, maxInstanceDistance * s_buildingMult);
             }
         }
     }

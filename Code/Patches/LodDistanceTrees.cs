@@ -39,6 +39,7 @@ namespace VisibilityControl.Patches
         internal static float TreeLodDistance
         {
             get => s_treeDistance;
+
             set
             {
                 // Enforce bounds.
@@ -47,10 +48,18 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<TreeInfo>();
-                    PrefabManager.UpdateRenderGroups(TreeManager.instance.m_treeLayer);
+                    RefreshVisibility();
                 }
             }
+        }
+
+        /// <summary>
+        /// Refreshes tree visibility.
+        /// </summary>
+        internal static void RefreshVisibility()
+        {
+            PrefabManager.RefreshLODs<TreeInfo>();
+            PrefabManager.UpdateRenderGroups(TreeManager.instance.m_treeLayer);
         }
 
         /// <summary>
@@ -61,7 +70,7 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void TreeRefreshLOD(TreeInfo __instance)
         {
-            __instance.m_lodRenderDistance = TreeLodDistance;
+            __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : s_treeDistance;
         }
 
         /// <summary>
@@ -77,7 +86,7 @@ namespace VisibilityControl.Patches
             // Ensure correct layer.
             if (layer == __instance.m_treeLayer)
             {
-                maxInstanceDistance = Mathf.Max(maxInstanceDistance, TreeLodDistance);
+                maxInstanceDistance = PrefabManager.LodMode ? 0 : Mathf.Max(maxInstanceDistance, s_treeDistance);
             }
         }
     }

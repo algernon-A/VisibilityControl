@@ -63,7 +63,7 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static float PropMinDistance
         {
-            get => s_propMinDistance;
+            get => PrefabManager.LodMode ? 0 : s_propMinDistance;
 
             set
             {
@@ -95,8 +95,7 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<PropInfo>();
-                    PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Props"));
+                    RefreshVisibility();
                 }
             }
         }
@@ -116,9 +115,18 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<PropInfo>();
+                    RefreshVisibility();
                 }
             }
+        }
+
+        /// <summary>
+        /// Refreshes prop visibility.
+        /// </summary>
+        internal static void RefreshVisibility()
+        {
+            PrefabManager.RefreshLODs<PropInfo>();
+            PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Props"));
         }
 
         /// <summary>
@@ -135,14 +143,14 @@ namespace VisibilityControl.Patches
                 // Decal.
                 float convertedDistance = s_decalDistance * 1.1f;
                 double decalFadeFactor = 1d / (convertedDistance * convertedDistance);
-                __instance.m_lodRenderDistance = __instance.m_maxRenderDistance = convertedDistance;
+                __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : __instance.m_maxRenderDistance = convertedDistance;
                 __instance.m_material.SetFloat("_FadeDistanceFactor", (float)decalFadeFactor);
             }
             else
             {
                 // Non-decal prop.
-                __instance.m_lodRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_lodRenderDistance * s_propMult);
-                __instance.m_maxRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_maxRenderDistance * s_propMult);
+                __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(PropMinDistance, __instance.m_lodRenderDistance * s_propMult);
+                __instance.m_maxRenderDistance = Mathf.Max(PropMinDistance, __instance.m_maxRenderDistance * s_propMult);
             }
         }
 
@@ -199,7 +207,7 @@ namespace VisibilityControl.Patches
             // Ensure correct layer.
             if (info.m_prefabDataLayer == layer)
             {
-                maxInstanceDistance = Mathf.Max(s_propMinDistance, maxInstanceDistance * s_propMult);
+                maxInstanceDistance = Mathf.Max(PropMinDistance, maxInstanceDistance * s_propMult);
             }
         }
     }

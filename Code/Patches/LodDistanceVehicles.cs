@@ -100,7 +100,9 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void VehicleRefreshLOD(VehicleInfo __instance)
         {
-            __instance.m_lodRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult);
+            __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult);
+
+            // Exclude vehicle max render distance from LOD effects.
             __instance.m_maxRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_maxRenderDistance * s_vehicleMult);
         }
 
@@ -112,7 +114,9 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void VehicleSubRefreshLOD(VehicleInfoSub __instance)
         {
-            __instance.m_lodRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult);
+            __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult);
+
+            // Exclude vehicle max render distance from LOD effects.
             __instance.m_maxRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_maxRenderDistance * s_vehicleMult);
         }
     }

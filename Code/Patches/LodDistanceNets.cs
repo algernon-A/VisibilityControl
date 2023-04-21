@@ -56,7 +56,7 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static float NetMinDistance
         {
-            get => s_netMinDistance;
+            get => PrefabManager.LodMode ? 0 : s_netMinDistance;
 
             set
             {
@@ -66,8 +66,7 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<NetInfo>();
-                    PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Road"));
+                    RefreshVisibility();
                 }
             }
         }
@@ -88,10 +87,18 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<NetInfo>();
-                    PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Road"));
+                    RefreshVisibility();
                 }
             }
+        }
+
+        /// <summary>
+        /// Refreshes network visibility.
+        /// </summary>
+        internal static void RefreshVisibility()
+        {
+            PrefabManager.RefreshLODs<NetInfo>();
+            PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Road"));
         }
 
         /// <summary>
@@ -111,7 +118,7 @@ namespace VisibilityControl.Patches
                     // Only applies to segements with LODs.
                     if (segments[i].m_lodMesh != null)
                     {
-                        segments[i].m_lodRenderDistance = Mathf.Max(s_netMinDistance, segments[i].m_lodRenderDistance * s_netMult);
+                        segments[i].m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_netMinDistance, segments[i].m_lodRenderDistance * s_netMult);
                     }
                 }
             }
@@ -125,13 +132,13 @@ namespace VisibilityControl.Patches
                     // Only applies to segements with LODs.
                     if (nodes[i].m_lodMesh != null)
                     {
-                        nodes[i].m_lodRenderDistance = Mathf.Max(s_netMinDistance, nodes[i].m_lodRenderDistance * s_netMult);
+                        nodes[i].m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_netMinDistance, nodes[i].m_lodRenderDistance * s_netMult);
                     }
                 }
             }
 
             // Set network prop distance multiplier.
-            __instance.m_maxPropDistance = Mathf.Max(s_netMinDistance, __instance.m_maxPropDistance * s_netMult);
+            __instance.m_maxPropDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_netMinDistance, __instance.m_maxPropDistance * s_netMult);
         }
 
         /// <summary>
@@ -146,7 +153,7 @@ namespace VisibilityControl.Patches
             // Ensure correct layer.
             if (layer == LayerMask.NameToLayer("Road"))
             {
-                maxInstanceDistance = Mathf.Max(s_netMinDistance, maxInstanceDistance * s_netMult);
+                maxInstanceDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_netMinDistance, maxInstanceDistance * s_netMult);
             }
         }
     }

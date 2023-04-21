@@ -6,6 +6,7 @@
 namespace VisibilityControl
 {
     using AlgernonCommons;
+    using AlgernonCommons.Keybinding;
     using AlgernonCommons.Translation;
     using AlgernonCommons.UI;
     using ColossalFramework.UI;
@@ -20,6 +21,7 @@ namespace VisibilityControl
         private const float Margin = 5f;
         private const float LeftMargin = 24f;
         private const float GroupMargin = 40f;
+        private const float TitleMargin = 50f;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneralOptions"/> class.
@@ -50,6 +52,18 @@ namespace VisibilityControl
             loggingCheck.isChecked = Logging.DetailLogging;
             loggingCheck.eventCheckChanged += (c, isChecked) => { Logging.DetailLogging = isChecked; };
             currentY += loggingCheck.height + GroupMargin;
+
+            // Hotkey options.
+            float headerWidth = OptionsPanelManager<OptionsPanel>.PanelWidth - (Margin * 2f);
+            UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("HOTKEYS"));
+            currentY += TitleMargin;
+
+            // Lod mode keymapping.
+            OptionsKeymapping lodKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            lodKeyMapping.Label = Translations.Translate("KEY_LOD");
+            lodKeyMapping.Binding = UIThreading.LodModeKey;
+            lodKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += lodKeyMapping.Panel.height + Margin;
         }
     }
 }
