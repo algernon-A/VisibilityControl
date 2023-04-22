@@ -7,7 +7,9 @@ namespace VisibilityControl
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
     using AlgernonCommons;
+    using AlgernonCommons.Translation;
     using ColossalFramework;
     using ColossalFramework.UI;
     using UnityEngine;
@@ -90,6 +92,9 @@ namespace VisibilityControl
                     LodDistanceTrees.RefreshVisibility();
                     LodDistanceProps.RefreshVisibility();
                     RefreshLODs<VehicleInfo>();
+
+                    // Update fee camera button.
+                    UpdateFreeCameraButton();
                 }
             }
         }
@@ -222,6 +227,9 @@ namespace VisibilityControl
             // Refresh LODs for any transparent lod fix prefabs.
             TransparentLODFix.RefreshBuildingPrefabs();
             TransparentLODFix.RefreshPropPrefabs();
+
+            // Set indicator initial state.
+            UpdateFreeCameraButton();
         }
 
         /// <summary>
@@ -285,6 +293,68 @@ namespace VisibilityControl
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Updates the color and tooltip of the free camera button to indicate current status.
+        /// </summary>
+        private static void UpdateFreeCameraButton()
+        {
+            UIButton freeCameraButton = GameObject.Find("Freecamera").GetComponent<UIButton>();
+            if (freeCameraButton == null)
+            {
+                Logging.Message("free camera button not ready");
+                return;
+            }
+
+            StringBuilder tooltip = new StringBuilder(Translations.Translate("MOD_NAME"));
+            tooltip.AppendLine();
+
+            // Colors copied from boformer's Ultimate Level of Detail mod, for consistency.
+            switch (s_currentMode)
+            {
+                case OverrideMode.None:
+                    freeCameraButton.color = new Color32(255, 255, 255, 255);
+
+                    tooltip.AppendLine(Translations.Translate("MODE_NORMAL"));
+                    tooltip.Append(Translations.Translate("KEY_SCREENSHOT"));
+                    tooltip.Append(' ');
+                    tooltip.AppendLine(SavedInputKey.ToLocalizedString("KEYNAME", UIThreading.ScreenshotModeKey.Encode()));
+                    tooltip.Append(Translations.Translate("KEY_LOD"));
+                    tooltip.Append(' ');
+                    tooltip.AppendLine(SavedInputKey.ToLocalizedString("KEYNAME", UIThreading.LodModeKey.Encode()));
+                    tooltip.Append(Translations.Translate("KEY_VANILLA"));
+                    tooltip.Append(' ');
+                    tooltip.Append(SavedInputKey.ToLocalizedString("KEYNAME", UIThreading.VanillaModeKey.Encode()));
+                    break;
+
+                case OverrideMode.Screenshot:
+                    freeCameraButton.color = new Color32(255, 128, 128, 255);
+                    tooltip.AppendLine(Translations.Translate("MODE_SCREENSHOT"));
+                    tooltip.Append(Translations.Translate("TO_DISABLE"));
+                    tooltip.Append(' ');
+                    tooltip.Append(SavedInputKey.ToLocalizedString("KEYNAME", UIThreading.ScreenshotModeKey.Encode()));
+                    break;
+
+                case OverrideMode.LOD:
+                    freeCameraButton.color = new Color32(128, 128, 255, 255);
+                    tooltip.AppendLine(Translations.Translate("MODE_LOD"));
+                    tooltip.Append(Translations.Translate("TO_DISABLE"));
+                    tooltip.Append(' ');
+                    tooltip.Append(SavedInputKey.ToLocalizedString("KEYNAME", UIThreading.LodModeKey.Encode()));
+                    break;
+
+                case OverrideMode.Vanilla:
+                    freeCameraButton.color = new Color32(255, 255, 128, 255);
+                    tooltip.AppendLine(Translations.Translate("MODE_VANILLA"));
+                    tooltip.Append(Translations.Translate("TO_DISABLE"));
+                    tooltip.Append(' ');
+                    tooltip.Append(SavedInputKey.ToLocalizedString("KEYNAME", UIThreading.VanillaModeKey.Encode()));
+                    break;
+            }
+
+            // Set tooltip.
+            freeCameraButton.tooltip = tooltip.ToString();
         }
     }
 }
