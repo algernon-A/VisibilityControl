@@ -8,6 +8,7 @@ namespace VisibilityControl
     using AlgernonCommons.Keybinding;
     using ICities;
     using UnityEngine;
+    using static PrefabManager;
 
     /// <summary>
     /// Threading to capture hotkeys.
@@ -15,10 +16,17 @@ namespace VisibilityControl
     public sealed class UIThreading : ThreadingExtensionBase
     {
         // Hotkeys.
-        private static Keybinding s_lodModeKey = new Keybinding(KeyCode.Period, false, false, true);
+        private static Keybinding s_screenshotModeKey = new Keybinding(KeyCode.Period, true, false, false);
+        private static Keybinding s_lodModeKey = new Keybinding(KeyCode.Period, true, false, true);
 
         // Flags.
-        private bool _lodyKeyProcessed = false;
+        private bool _screenshotKeyProcessed = false;
+        private bool _lodKeyProcessed = false;
+
+        /// <summary>
+        /// Gets or sets the screenshot mode hotkey.
+        /// </summary>
+        internal static Keybinding ScreenshotModeKey { get => s_screenshotModeKey; set => s_screenshotModeKey = value; }
 
         /// <summary>
         /// Gets or sets the LOD mode hotkey.
@@ -32,23 +40,56 @@ namespace VisibilityControl
         /// <param name="simulationTimeDelta">Simulation time delta since last update.</param>
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            // Check for anarchy hotkey.
-            if (s_lodModeKey.IsPressed())
+            // Check for screenshot mode hotkey.
+            if (s_screenshotModeKey.IsPressed())
             {
                 // Only process if we're not already doing so.
-                if (!_lodyKeyProcessed)
+                if (!_screenshotKeyProcessed)
                 {
                     // Set processed flag.
-                    _lodyKeyProcessed = true;
+                    _screenshotKeyProcessed = true;
 
-                    // Toggle LOD mode.
-                    PrefabManager.LodMode = !PrefabManager.LodMode;
+                    // Toggle screenshot mode.
+                    if (CurrentMode == OverrideMode.Screenshot)
+                    {
+                        CurrentMode = OverrideMode.None;
+                    }
+                    else
+                    {
+                        CurrentMode = OverrideMode.Screenshot;
+                    }
                 }
             }
             else
             {
                 // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
-                _lodyKeyProcessed = false;
+                _screenshotKeyProcessed = false;
+            }
+
+            // Check for LOD mode hotkey.
+            if (s_lodModeKey.IsPressed())
+            {
+                // Only process if we're not already doing so.
+                if (!_lodKeyProcessed)
+                {
+                    // Set processed flag.
+                    _lodKeyProcessed = true;
+
+                    // Toggle LOD mode.
+                    if (CurrentMode == OverrideMode.LOD)
+                    {
+                        CurrentMode = OverrideMode.None;
+                    }
+                    else
+                    {
+                        CurrentMode = OverrideMode.LOD;
+                    }
+                }
+            }
+            else
+            {
+                // Relevant keys aren't pressed anymore; this keystroke is over, so reset and continue.
+                _lodKeyProcessed = false;
             }
         }
     }

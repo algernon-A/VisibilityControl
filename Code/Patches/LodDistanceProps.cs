@@ -8,6 +8,7 @@ namespace VisibilityControl.Patches
     using System;
     using HarmonyLib;
     using UnityEngine;
+    using static PrefabManager;
 
     /// <summary>
     /// Harmony patches to adjust prop LOD visibility distance ranges.
@@ -63,7 +64,7 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static float PropMinDistance
         {
-            get => PrefabManager.LodMode ? 0 : s_propMinDistance;
+            get => s_propMinDistance;
 
             set
             {
@@ -73,8 +74,7 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<PropInfo>();
-                    PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Props"));
+                    RefreshVisibility();
                 }
             }
         }
@@ -125,8 +125,8 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static void RefreshVisibility()
         {
-            PrefabManager.RefreshLODs<PropInfo>();
-            PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Props"));
+            RefreshLODs<PropInfo>();
+            UpdateRenderGroups(LayerMask.NameToLayer("Props"));
         }
 
         /// <summary>
@@ -137,20 +137,28 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void PropRefreshLOD(PropInfo __instance)
         {
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
             // Decal or prop?
             if (__instance.m_isDecal && __instance.m_material && __instance.m_material.shader.name.Equals("Custom/Props/Decal/Blend"))
             {
                 // Decal.
-                float convertedDistance = s_decalDistance * 1.1f;
+                // Calculate override distance as max (otherwise decals won't be visibible at all in LOD mode).
+                float convertedDistance = Mathf.Max(s_decalDistance, overrideDistance) * 1.1f;
                 double decalFadeFactor = 1d / (convertedDistance * convertedDistance);
-                __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : __instance.m_maxRenderDistance = convertedDistance;
+
+                // Apply visibility.
+                __instance.m_lodRenderDistance = overrideDistance < 0 ? __instance.m_maxRenderDistance = convertedDistance : overrideDistance;
                 __instance.m_material.SetFloat("_FadeDistanceFactor", (float)decalFadeFactor);
             }
             else
             {
                 // Non-decal prop.
-                __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(PropMinDistance, __instance.m_lodRenderDistance * s_propMult);
-                __instance.m_maxRenderDistance = Mathf.Max(PropMinDistance, __instance.m_maxRenderDistance * s_propMult);
+                __instance.m_lodRenderDistance = overrideDistance < 0 ? Mathf.Max(s_propMinDistance, __instance.m_lodRenderDistance * s_propMult) : overrideDistance;
+
+                // Apply override distance as max, otherwise props won't be visible at all in LOD mode.
+                __instance.m_maxRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_maxRenderDistance * s_propMult, overrideDistance);
             }
         }
 

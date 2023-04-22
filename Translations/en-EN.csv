@@ -21,4 +21,5 @@
 "TREE_DISTANCE","Tree LOD distance","Slider in options panel."
 "RESET_DEFAULT","Reset to defaults","Options panel button text."
 "HOTKEYS","Hotkeys","Options panel group title."
-"KEY_LOD","Toggle LOD mode","Options panel key setting text."
+"KEY_SCREENSHOT","Toggle screenshot mode (highest detail)","Options panel key setting text."
+"KEY_LOD","Toggle LOD mode (lowest detail)","Options panel key setting text."

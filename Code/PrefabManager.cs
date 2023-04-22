@@ -19,21 +19,65 @@ namespace VisibilityControl
     /// </summary>
     internal static class PrefabManager
     {
-        private static bool s_lodMode = false;
+        // Active detail override mode.
+        private static OverrideMode s_currentMode = OverrideMode.None;
+
+        /// <summary>
+        /// Detail override modes.
+        /// </summary>
+        internal enum OverrideMode : int
+        {
+            /// <summary>
+            /// No override (use player settings).
+            /// </summary>
+            None = 0,
+
+            /// <summary>
+            /// Screenshot mode override (use maximum detail).
+            /// </summary>
+            Screenshot,
+
+            /// <summary>
+            /// LOD mode override (LODs only).
+            /// </summary>
+            LOD,
+        }
+
+        /// <summary>
+        /// Gets the current visibility distance override (-1f if none).
+        /// </summary>
+        internal static float OverrideDistance
+        {
+            get
+            {
+                switch (CurrentMode)
+                {
+                    case OverrideMode.LOD:
+                        return 0f;
+
+                    case OverrideMode.Screenshot:
+                        return 100000f;
+
+                    case OverrideMode.None:
+                    default:
+                        return -1f;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether LOD mod is active.
         /// </summary>
-        internal static bool LodMode
+        internal static OverrideMode CurrentMode
         {
-            get => s_lodMode;
+            get => s_currentMode;
 
             set
             {
                 // Don't do anything if no change.
-                if (s_lodMode != value)
+                if (s_currentMode != value)
                 {
-                    s_lodMode = value;
+                    s_currentMode = value;
 
                     // Refresh all visibility settings.
                     LodDistanceBuildings.RefreshVisibility();

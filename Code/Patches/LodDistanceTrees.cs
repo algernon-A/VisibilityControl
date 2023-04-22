@@ -7,6 +7,7 @@ namespace VisibilityControl.Patches
 {
     using HarmonyLib;
     using UnityEngine;
+    using static PrefabManager;
 
     /// <summary>
     /// Harmony patches to adjust tree LOD visibility distance ranges.
@@ -58,8 +59,8 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static void RefreshVisibility()
         {
-            PrefabManager.RefreshLODs<TreeInfo>();
-            PrefabManager.UpdateRenderGroups(TreeManager.instance.m_treeLayer);
+            RefreshLODs<TreeInfo>();
+            UpdateRenderGroups(TreeManager.instance.m_treeLayer);
         }
 
         /// <summary>
@@ -70,7 +71,10 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void TreeRefreshLOD(TreeInfo __instance)
         {
-            __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : s_treeDistance;
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
+            __instance.m_lodRenderDistance = overrideDistance < 0f ? s_treeDistance : overrideDistance;
         }
 
         /// <summary>
@@ -86,7 +90,8 @@ namespace VisibilityControl.Patches
             // Ensure correct layer.
             if (layer == __instance.m_treeLayer)
             {
-                maxInstanceDistance = PrefabManager.LodMode ? 0 : Mathf.Max(maxInstanceDistance, s_treeDistance);
+                // Set maximum visibility distance for this item.
+                maxInstanceDistance = Mathf.Max(maxInstanceDistance, s_treeDistance, OverrideDistance);
             }
         }
     }

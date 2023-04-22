@@ -7,6 +7,7 @@ namespace VisibilityControl.Patches
 {
     using HarmonyLib;
     using UnityEngine;
+    using static PrefabManager;
 
     /// <summary>
     /// Harmony patches to adjust network LOD visibility distance ranges.
@@ -56,7 +57,7 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static float NetMinDistance
         {
-            get => PrefabManager.LodMode ? 0 : s_netMinDistance;
+            get => s_netMinDistance;
 
             set
             {
@@ -97,8 +98,8 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static void RefreshVisibility()
         {
-            PrefabManager.RefreshLODs<NetInfo>();
-            PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Road"));
+            RefreshLODs<NetInfo>();
+            UpdateRenderGroups(LayerMask.NameToLayer("Road"));
         }
 
         /// <summary>
@@ -109,16 +110,19 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void NetRefreshLOD(NetInfo __instance)
         {
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
             // Iterate through all segments in net.
             NetInfo.Segment[] segments = __instance.m_segments;
             if (segments != null)
             {
                 for (int i = 0; i < segments.Length; ++i)
                 {
-                    // Only applies to segements with LODs.
+                    // Only applies to segments with LODs.
                     if (segments[i].m_lodMesh != null)
                     {
-                        segments[i].m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_netMinDistance, segments[i].m_lodRenderDistance * s_netMult);
+                        segments[i].m_lodRenderDistance = overrideDistance < 0f ? Mathf.Max(s_netMinDistance, segments[i].m_lodRenderDistance * s_netMult) : overrideDistance;
                     }
                 }
             }
@@ -129,16 +133,16 @@ namespace VisibilityControl.Patches
             {
                 for (int i = 0; i < nodes.Length; ++i)
                 {
-                    // Only applies to segements with LODs.
+                    // Only applies to segments with LODs.
                     if (nodes[i].m_lodMesh != null)
                     {
-                        nodes[i].m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_netMinDistance, nodes[i].m_lodRenderDistance * s_netMult);
+                        nodes[i].m_lodRenderDistance = overrideDistance < 0f ? Mathf.Max(s_netMinDistance, nodes[i].m_lodRenderDistance * s_netMult) : overrideDistance;
                     }
                 }
             }
 
             // Set network prop distance multiplier.
-            __instance.m_maxPropDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_netMinDistance, __instance.m_maxPropDistance * s_netMult);
+            __instance.m_maxPropDistance = overrideDistance < 0f ? Mathf.Max(s_netMinDistance, __instance.m_maxPropDistance * s_netMult) : overrideDistance;
         }
 
         /// <summary>
@@ -153,7 +157,11 @@ namespace VisibilityControl.Patches
             // Ensure correct layer.
             if (layer == LayerMask.NameToLayer("Road"))
             {
-                maxInstanceDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_netMinDistance, maxInstanceDistance * s_netMult);
+                // Get current override distance.
+                float overrideDistance = OverrideDistance;
+
+                // Set maximum visibility distance for this item.
+                maxInstanceDistance = overrideDistance < 0f ? Mathf.Max(s_netMinDistance, maxInstanceDistance * s_netMult) : overrideDistance;
             }
         }
     }

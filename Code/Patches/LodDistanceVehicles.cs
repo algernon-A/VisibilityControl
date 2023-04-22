@@ -7,6 +7,7 @@ namespace VisibilityControl.Patches
 {
     using HarmonyLib;
     using UnityEngine;
+    using static PrefabManager;
 
     /// <summary>
     /// Harmony patches to adjust vehicle LOD visibility distance ranges.
@@ -66,7 +67,7 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<VehicleInfo>();
+                    RefreshLODs<VehicleInfo>();
                 }
             }
         }
@@ -87,7 +88,7 @@ namespace VisibilityControl.Patches
                 // Refresh prefabs if game is loaded.
                 if (Loading.IsLoaded)
                 {
-                    PrefabManager.RefreshLODs<VehicleInfo>();
+                    RefreshLODs<VehicleInfo>();
                 }
             }
         }
@@ -100,10 +101,13 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void VehicleRefreshLOD(VehicleInfo __instance)
         {
-            __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult);
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
+            __instance.m_lodRenderDistance = overrideDistance < 0f ? Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult) : overrideDistance;
 
             // Exclude vehicle max render distance from LOD effects.
-            __instance.m_maxRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_maxRenderDistance * s_vehicleMult);
+            __instance.m_maxRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_maxRenderDistance * s_vehicleMult, overrideDistance);
         }
 
         /// <summary>
@@ -114,10 +118,13 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void VehicleSubRefreshLOD(VehicleInfoSub __instance)
         {
-            __instance.m_lodRenderDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult);
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
+            __instance.m_lodRenderDistance = overrideDistance < 0f ? Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult) : overrideDistance;
 
             // Exclude vehicle max render distance from LOD effects.
-            __instance.m_maxRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_maxRenderDistance * s_vehicleMult);
+            __instance.m_maxRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_maxRenderDistance * s_vehicleMult, overrideDistance);
         }
     }
 }

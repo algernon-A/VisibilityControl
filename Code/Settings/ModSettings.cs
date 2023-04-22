@@ -41,6 +41,12 @@ namespace VisibilityControl
         public LodDistanceRecord LodDistance { get; set; } = new LodDistanceRecord();
 
         /// <summary>
+        /// Gets or sets the screenshot mode hotkey.
+        /// </summary>
+        [XmlElement("ScreenshotModeKey")]
+        public Keybinding ScreenshotModeKey { get => UIThreading.ScreenshotModeKey; set => UIThreading.ScreenshotModeKey = value; }
+
+        /// <summary>
         /// Gets or sets the LOD mode hotkey.
         /// </summary>
         [XmlElement("LodModeKey")]

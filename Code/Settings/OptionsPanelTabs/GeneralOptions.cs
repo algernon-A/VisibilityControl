@@ -58,7 +58,14 @@ namespace VisibilityControl
             UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("HOTKEYS"));
             currentY += TitleMargin;
 
-            // Lod mode keymapping.
+            // Screenshot mode keymapping.
+            OptionsKeymapping screenshotKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            screenshotKeyMapping.Label = Translations.Translate("KEY_SCREENSHOT");
+            screenshotKeyMapping.Binding = UIThreading.ScreenshotModeKey;
+            screenshotKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += screenshotKeyMapping.Panel.height + Margin;
+
+            // LOD mode keymapping.
             OptionsKeymapping lodKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
             lodKeyMapping.Label = Translations.Translate("KEY_LOD");
             lodKeyMapping.Binding = UIThreading.LodModeKey;

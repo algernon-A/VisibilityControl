@@ -7,6 +7,7 @@ namespace VisibilityControl.Patches
 {
     using HarmonyLib;
     using UnityEngine;
+    using static PrefabManager;
 
     /// <summary>
     /// Harmony patches to adjust building LOD visibility distance ranges.
@@ -56,7 +57,7 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static float BuildingMinDistance
         {
-            get => PrefabManager.LodMode ? 0 : s_buildingMinDistance;
+            get => s_buildingMinDistance;
 
             set
             {
@@ -97,9 +98,9 @@ namespace VisibilityControl.Patches
         /// </summary>
         internal static void RefreshVisibility()
         {
-            PrefabManager.RefreshLODs<BuildingInfo>();
-            PrefabManager.RefreshLODs<BuildingInfoSub>();
-            PrefabManager.UpdateRenderGroups(LayerMask.NameToLayer("Buildings"));
+            RefreshLODs<BuildingInfo>();
+            RefreshLODs<BuildingInfoSub>();
+            UpdateRenderGroups(LayerMask.NameToLayer("Buildings"));
         }
 
         /// <summary>
@@ -110,11 +111,14 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void BuildingRefreshLOD(BuildingInfo __instance)
         {
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
             // Only applies to instances with LODs.
             if (__instance.m_lodMesh != null)
             {
-                __instance.m_minLodDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult);
-                __instance.m_maxLodDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult);
+                __instance.m_minLodDistance = overrideDistance < 0f ? Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult) : overrideDistance;
+                __instance.m_maxLodDistance = overrideDistance < 0f ? Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult) : overrideDistance;
             }
         }
 
@@ -126,11 +130,14 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void BuildingSubRefreshLOD(BuildingInfoSub __instance)
         {
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
             // Only applies to instances with LODs.
             if (__instance.m_lodMesh != null)
             {
-                __instance.m_minLodDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult);
-                __instance.m_maxLodDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult);
+                __instance.m_minLodDistance = overrideDistance < 0f ? Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult) : overrideDistance;
+                __instance.m_maxLodDistance = overrideDistance < 0f ? Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult) : overrideDistance;
             }
         }
 
@@ -147,7 +154,11 @@ namespace VisibilityControl.Patches
             // Ensure correct layer.
             if (__instance.m_info.m_prefabDataLayer == layer)
             {
-                maxInstanceDistance = PrefabManager.LodMode ? 0 : Mathf.Max(s_buildingMinDistance, maxInstanceDistance * s_buildingMult);
+                // Get current override distance.
+                float overrideDistance = OverrideDistance;
+
+                // Set maximum visibility distance for this item.
+                maxInstanceDistance = overrideDistance < 0f ? Mathf.Max(s_buildingMinDistance, maxInstanceDistance * s_buildingMult) : overrideDistance;
             }
         }
     }
