@@ -23,3 +23,4 @@
 "HOTKEYS","Hotkeys","Options panel group title."
 "KEY_SCREENSHOT","Toggle screenshot mode (highest detail)","Options panel key setting text."
 "KEY_LOD","Toggle LOD mode (lowest detail)","Options panel key setting text."
+"KEY_VANILLA","Toggle vanilla mode (game defaults)","Options panel key setting text."

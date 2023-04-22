@@ -71,6 +71,12 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void TreeRefreshLOD(TreeInfo __instance)
         {
+            // Don't do anything if using vanilla settings.
+            if (CurrentMode == OverrideMode.Vanilla)
+            {
+                return;
+            }
+
             // Get current override distance.
             float overrideDistance = OverrideDistance;
 
@@ -87,6 +93,12 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void TreePopulateGroupData(TreeManager __instance, int layer, ref float maxInstanceDistance)
         {
+            // Don't do anything if using vanilla settings.
+            if (CurrentMode == OverrideMode.Vanilla)
+            {
+                return;
+            }
+
             // Ensure correct layer.
             if (layer == __instance.m_treeLayer)
             {

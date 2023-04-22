@@ -71,6 +71,13 @@ namespace VisibilityControl
             lodKeyMapping.Binding = UIThreading.LodModeKey;
             lodKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
             currentY += lodKeyMapping.Panel.height + Margin;
+
+            // Vanilla mode keymapping.
+            OptionsKeymapping vanillaKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
+            vanillaKeyMapping.Label = Translations.Translate("KEY_VANILLA");
+            vanillaKeyMapping.Binding = UIThreading.VanillaModeKey;
+            vanillaKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            currentY += vanillaKeyMapping.Panel.height + Margin;
         }
     }
 }

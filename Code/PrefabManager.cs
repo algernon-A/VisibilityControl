@@ -33,6 +33,11 @@ namespace VisibilityControl
             None = 0,
 
             /// <summary>
+            /// Vanilla mode (ignore mod settings).
+            /// </summary>
+            Vanilla,
+
+            /// <summary>
             /// Screenshot mode override (use maximum detail).
             /// </summary>
             Screenshot,

@@ -110,6 +110,12 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void NetRefreshLOD(NetInfo __instance)
         {
+            // Don't do anything if using vanilla settings.
+            if (CurrentMode == OverrideMode.Vanilla)
+            {
+                return;
+            }
+
             // Get current override distance.
             float overrideDistance = OverrideDistance;
 
@@ -154,6 +160,12 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void NetPopulateGroupData(int layer, ref float maxInstanceDistance)
         {
+            // Don't do anything if using vanilla settings.
+            if (CurrentMode == OverrideMode.Vanilla)
+            {
+                return;
+            }
+
             // Ensure correct layer.
             if (layer == LayerMask.NameToLayer("Road"))
             {

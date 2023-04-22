@@ -53,6 +53,12 @@ namespace VisibilityControl
         public Keybinding LodModeKey { get => UIThreading.LodModeKey; set => UIThreading.LodModeKey = value; }
 
         /// <summary>
+        /// Gets or sets the vanilla mode hotkey.
+        /// </summary>
+        [XmlElement("VanillaModeKey")]
+        public Keybinding VanillaModeKey { get => UIThreading.VanillaModeKey; set => UIThreading.VanillaModeKey = value; }
+
+        /// <summary>
         /// Loads settings from file.
         /// </summary>
         internal static void Load() => XMLFileUtils.Load<ModSettings>(SettingsFileName);
