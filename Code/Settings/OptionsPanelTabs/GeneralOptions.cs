@@ -59,24 +59,15 @@ namespace VisibilityControl
             currentY += TitleMargin;
 
             // Screenshot mode keymapping.
-            OptionsKeymapping screenshotKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
-            screenshotKeyMapping.Label = Translations.Translate("KEY_SCREENSHOT");
-            screenshotKeyMapping.Binding = UIThreading.ScreenshotModeKey;
-            screenshotKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            OptionsKeymapping screenshotKeyMapping = OptionsKeymapping.AddKeymapping(panel, LeftMargin, currentY, Translations.Translate("KEY_SCREENSHOT"), UIThreading.ScreenshotModeKey);
             currentY += screenshotKeyMapping.Panel.height + Margin;
 
             // LOD mode keymapping.
-            OptionsKeymapping lodKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
-            lodKeyMapping.Label = Translations.Translate("KEY_LOD");
-            lodKeyMapping.Binding = UIThreading.LodModeKey;
-            lodKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            OptionsKeymapping lodKeyMapping = OptionsKeymapping.AddKeymapping(panel, LeftMargin, currentY, Translations.Translate("KEY_LOD"), UIThreading.LodModeKey);
             currentY += lodKeyMapping.Panel.height + Margin;
 
             // Vanilla mode keymapping.
-            OptionsKeymapping vanillaKeyMapping = panel.gameObject.AddComponent<OptionsKeymapping>();
-            vanillaKeyMapping.Label = Translations.Translate("KEY_VANILLA");
-            vanillaKeyMapping.Binding = UIThreading.VanillaModeKey;
-            vanillaKeyMapping.Panel.relativePosition = new Vector2(LeftMargin, currentY);
+            OptionsKeymapping vanillaKeyMapping = OptionsKeymapping.AddKeymapping(panel, LeftMargin, currentY, Translations.Translate("KEY_VANILLA"), UIThreading.VanillaModeKey);
             currentY += vanillaKeyMapping.Panel.height + Margin;
         }
     }

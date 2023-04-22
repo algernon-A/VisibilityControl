@@ -28,5 +28,5 @@
 "MODE_NORMAL","Normal mode (mod settings)","Status tooltip text."
 "MODE_SCREENSHOT","Screenshot (highest detail) mode","Status tooltip text."
 "MODE_LOD","LOD mode (lowest detail)","Status tooltip text."
-"MODE_SCREENSHOT","Vanilla mode (game defaults)","Status tooltip text."
+"MODE_VANILLA","Vanilla mode (game defaults)","Status tooltip text."
 "TO DISABLE","To disable:","Status tooltip text."
