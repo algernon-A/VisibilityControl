@@ -19,7 +19,7 @@ namespace VisibilityControl
         /// <summary>
         /// Gets a list of permitted loading modes.
         /// </summary>
-        protected override List<AppMode> PermittedModes => new List<AppMode> { AppMode.Game, AppMode.MapEditor };
+        protected override List<AppMode> PermittedModes => new List<AppMode> { AppMode.Game, AppMode.MapEditor, AppMode.AssetEditor };
 
         /// <summary>
         /// Called by the game when exiting a level.
