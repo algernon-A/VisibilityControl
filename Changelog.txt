@@ -1,1 +1,2 @@
 - Rearrange options panel tabs
+- Improve options panel slider value displays
