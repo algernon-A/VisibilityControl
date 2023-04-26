@@ -1,2 +1,4 @@
+Version 0.9.1 -
+
 - Rearrange options panel tabs
 - Improve options panel slider value displays
