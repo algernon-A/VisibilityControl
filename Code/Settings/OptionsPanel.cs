@@ -22,8 +22,8 @@ namespace VisibilityControl
 
             // Add tabs and panels.
             new GeneralOptions(tabStrip, 0);
-            new TransparencyOptions(tabStrip, 1);
-            new LODDistanceOptions(tabStrip, 2);
+            new LODDistanceOptions(tabStrip, 1);
+            new TransparencyOptions(tabStrip, 2);
 
             // Select first tab.
             tabStrip.selectedIndex = -1;
