@@ -92,6 +92,7 @@ namespace VisibilityControl
                     LodDistanceTrees.RefreshVisibility();
                     LodDistanceProps.RefreshVisibility();
                     RefreshLODs<VehicleInfo>();
+                    RefreshLODs<CitizenInfo>();
 
                     // Update fee camera button.
                     UpdateFreeCameraButton();

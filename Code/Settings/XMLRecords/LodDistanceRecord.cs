@@ -7,6 +7,7 @@ namespace VisibilityControl
 {
     using System.Xml.Serialization;
     using static VisibilityControl.Patches.LodDistanceBuildings;
+    using static VisibilityControl.Patches.LodDistanceCitizens;
     using static VisibilityControl.Patches.LodDistanceNets;
     using static VisibilityControl.Patches.LodDistanceProps;
     using static VisibilityControl.Patches.LodDistanceTrees;
@@ -83,5 +84,17 @@ namespace VisibilityControl
         /// </summary>
         [XmlElement("TreeLodDistance")]
         public float XMLTreeLodDistance { get => TreeLodDistance; set => TreeLodDistance = value; }
+
+        /// <summary>
+        /// Gets or sets the citizen LOD transition distance.
+        /// </summary>
+        [XmlElement("CitizenLodDistance")]
+        public float XMLCitizenLodDistance { get => CitizenLodDistance; set => CitizenLodDistance = value; }
+
+        /// <summary>
+        /// Gets or sets the citizen maximum visibility distance.
+        /// </summary>
+        [XmlElement("CitizenMaxDistance")]
+        public float XMLCitizenMaxDistance { get => CitizenMaxDistance; set => CitizenMaxDistance = value; }
     }
 }

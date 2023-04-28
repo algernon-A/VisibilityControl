@@ -10,6 +10,7 @@ namespace VisibilityControl
     using ColossalFramework.UI;
     using UnityEngine;
     using static VisibilityControl.Patches.LodDistanceBuildings;
+    using static VisibilityControl.Patches.LodDistanceCitizens;
     using static VisibilityControl.Patches.LodDistanceNets;
     using static VisibilityControl.Patches.LodDistanceProps;
     using static VisibilityControl.Patches.LodDistanceTrees;
@@ -38,6 +39,8 @@ namespace VisibilityControl
         private readonly UISlider _propMultSlider;
         private readonly UISlider _decalDistanceSlider;
         private readonly UISlider _treeDistanceSlider;
+        private readonly UISlider _citizenLodDistanceSlider;
+        private readonly UISlider _citizenMaxDistanceSlider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LODDistanceOptions"/> class.
@@ -75,6 +78,8 @@ namespace VisibilityControl
                 _propMultSlider.value = DefaultPropMult;
                 _decalDistanceSlider.value = DefaultDecalDistance;
                 _treeDistanceSlider.value = DefaultTreeDistance;
+                _citizenLodDistanceSlider.value = DefaultCitizenLodDistance;
+                _citizenMaxDistanceSlider.value = DefaultCitizenMaxDistance;
             };
 
             // Y position indicator.
@@ -154,6 +159,21 @@ namespace VisibilityControl
 
             _treeDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("TREE_DISTANCE"), MinTreeDistance, MaxTreeDistance, 100f, TreeLodDistance, distanceFormat);
             _treeDistanceSlider.eventValueChanged += (c, value) => TreeLodDistance = value;
+            _treeDistanceSlider.parent.tooltip = Translations.Translate("LOD_TRANSITION_ABS_TIP");
+            currentY += SliderMargin;
+
+            // Citizen visibility options.
+            UISpacers.AddTitleSpacer(scrollPanel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_CITIZENS"));
+            currentY += TitleMargin;
+
+            _citizenLodDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("LOD_TRANSITION"), MinCitizenLodDistance, MaxCitizenLodDistance, 25f, CitizenLodDistance, distanceFormat);
+            _citizenLodDistanceSlider.eventValueChanged += (c, value) => CitizenLodDistance = value;
+            _citizenLodDistanceSlider.parent.tooltip = Translations.Translate("LOD_TRANSITION_ABS_TIP");
+            currentY += SliderMargin;
+
+            _citizenMaxDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MAX_DISTANCE"), MinCitizenMaxDistance, MaxCitizenMaxDistance, 100f, CitizenMaxDistance, distanceFormat);
+            _citizenMaxDistanceSlider.eventValueChanged += (c, value) => CitizenMaxDistance = value;
+            _citizenMaxDistanceSlider.parent.tooltip = Translations.Translate("MAX_DISTANCE_TIP");
             currentY += SliderMargin;
         }
     }

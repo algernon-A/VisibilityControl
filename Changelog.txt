@@ -1,3 +1,6 @@
+- Add citizen visibility distance control
+
+
 Version 0.9.1 -
 
 - Rearrange options panel tabs
