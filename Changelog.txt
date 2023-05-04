@@ -1,3 +1,5 @@
+Version 0.9.2 -
+
 - Add citizen visibility distance control
 
 

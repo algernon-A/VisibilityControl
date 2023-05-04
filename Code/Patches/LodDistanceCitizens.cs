@@ -16,7 +16,6 @@ namespace VisibilityControl.Patches
     [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony")]
     internal static class LodDistanceCitizens
     {
-
         /// <summary>
         /// Minimum permitted citizen LOD transition distance.
         /// The game has a minimum bounds check of 150f for citizens in the game's code at the lowest detail level, so this is half that.
