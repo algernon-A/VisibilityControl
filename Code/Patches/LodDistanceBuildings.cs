@@ -18,9 +18,8 @@ namespace VisibilityControl.Patches
     {
         /// <summary>
         /// Minimum permitted building LOD visiblity distance.
-        /// This matches the minimum bounds check of 1000f for buildings in the game's code.
         /// </summary>
-        internal const float MinBuildingDistance = 1000f;
+        internal const float MinBuildingDistance = 1f;
 
         /// <summary>
         /// Maximum permitted LOD visibility distance.
@@ -29,6 +28,7 @@ namespace VisibilityControl.Patches
 
         /// <summary>
         /// Default minimum building LOD distance.
+        /// This matches the minimum bounds check of 1000f for buildings in the game's code.
         /// </summary>
         internal const float DefaultBuildingMinDistance = 1000f;
 

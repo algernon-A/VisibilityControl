@@ -18,9 +18,9 @@ namespace VisibilityControl.Patches
     {
         /// <summary>
         /// Minimum permitted citizen LOD transition distance.
-        /// The game has a minimum bounds check of 150f for citizens in the game's code at the lowest detail level, so this is half that.
+        /// The game has a minimum bounds check of 150f for citizens in the game's code at the lowest detail level.
         /// </summary>
-        internal const float MinCitizenLodDistance = 50f;
+        internal const float MinCitizenLodDistance = 1;
 
         /// <summary>
         /// Maximum permitted LOD transition distance.

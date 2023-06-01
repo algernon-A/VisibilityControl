@@ -19,9 +19,8 @@ namespace VisibilityControl.Patches
     {
         /// <summary>
         /// Minimum permitted prop LOD visiblity distance.
-        /// This matches the minimum bounds check of 100f for props in the game's code.
         /// </summary>
-        internal const float MinPropDistance = 100f;
+        internal const float MinPropDistance = 1;
 
         /// <summary>
         /// Maximum permitted LOD visibility distance.
@@ -30,6 +29,7 @@ namespace VisibilityControl.Patches
 
         /// <summary>
         /// Default minimum prop LOD distance.
+        /// This matches the minimum bounds check of 100f for props in the game's code.
         /// </summary>
         internal const float DefaultPropMinDistance = 100f;
 

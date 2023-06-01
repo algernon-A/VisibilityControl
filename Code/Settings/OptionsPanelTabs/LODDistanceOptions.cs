@@ -96,7 +96,7 @@ namespace VisibilityControl
             UISpacers.AddTitle(scrollPanel, Margin, currentY, Translations.Translate("OPTIONS_BUILDINGS"));
             currentY += TitleMargin;
 
-            _buildingMinDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinBuildingDistance, MaxBuildingDistance, 100f, BuildingMinDistance, distanceFormat);
+            _buildingMinDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinBuildingDistance, MaxBuildingDistance, 1f, BuildingMinDistance, distanceFormat);
             _buildingMinDistanceSlider.eventValueChanged += (c, value) => BuildingMinDistance = value;
             _buildingMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
             currentY += SliderMargin;
@@ -110,7 +110,7 @@ namespace VisibilityControl
             UISpacers.AddTitleSpacer(scrollPanel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_NETS"));
             currentY += TitleMargin;
 
-            _netMinDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinNetDistance, MaxNetDistance, 100f, NetMinDistance, distanceFormat);
+            _netMinDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinNetDistance, MaxNetDistance, 1f, NetMinDistance, distanceFormat);
             _netMinDistanceSlider.eventValueChanged += (c, value) => NetMinDistance = value;
             _netMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
             currentY += SliderMargin;
@@ -124,7 +124,7 @@ namespace VisibilityControl
             UISpacers.AddTitleSpacer(scrollPanel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_VEHICLES"));
             currentY += TitleMargin;
 
-            _vehicleMinDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinVehicleDistance, MaxVehicleDistance, 100f, VehicleMinDistance, distanceFormat);
+            _vehicleMinDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinVehicleDistance, MaxVehicleDistance, 1f, VehicleMinDistance, distanceFormat);
             _vehicleMinDistanceSlider.eventValueChanged += (c, value) => VehicleMinDistance = value;
             _vehicleMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
             currentY += SliderMargin;
@@ -138,7 +138,7 @@ namespace VisibilityControl
             UISpacers.AddTitleSpacer(scrollPanel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_PROPS"));
             currentY += TitleMargin;
 
-            _propMinDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinPropDistance, MaxPropDistance, 100f, PropMinDistance, distanceFormat);
+            _propMinDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MIN_DISTANCE"), MinPropDistance, MaxPropDistance, 1f, PropMinDistance, distanceFormat);
             _propMinDistanceSlider.eventValueChanged += (c, value) => PropMinDistance = value;
             _propMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
             currentY += SliderMargin;
@@ -148,7 +148,7 @@ namespace VisibilityControl
             _propMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
             currentY += SliderMargin;
 
-            _decalDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DECAL_DISTANCE"), MinPropDistance, MaxPropDistance, 100f, DecalFadeDistance, distanceFormat);
+            _decalDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DECAL_DISTANCE"), MinPropDistance, MaxPropDistance, 1f, DecalFadeDistance, distanceFormat);
             _decalDistanceSlider.eventValueChanged += (c, value) => DecalFadeDistance = value;
             _decalDistanceSlider.parent.tooltip = Translations.Translate("DECAL_DISTANCE_TIP");
             currentY += SliderMargin;
@@ -157,7 +157,7 @@ namespace VisibilityControl
             UISpacers.AddTitleSpacer(scrollPanel, Margin, currentY, headerWidth, Translations.Translate("OPTIONS_TREES"));
             currentY += TitleMargin;
 
-            _treeDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("TREE_DISTANCE"), MinTreeDistance, MaxTreeDistance, 100f, TreeLodDistance, distanceFormat);
+            _treeDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("TREE_DISTANCE"), MinTreeDistance, MaxTreeDistance, 1f, TreeLodDistance, distanceFormat);
             _treeDistanceSlider.eventValueChanged += (c, value) => TreeLodDistance = value;
             _treeDistanceSlider.parent.tooltip = Translations.Translate("LOD_TRANSITION_ABS_TIP");
             currentY += SliderMargin;
@@ -171,7 +171,7 @@ namespace VisibilityControl
             _citizenLodDistanceSlider.parent.tooltip = Translations.Translate("LOD_TRANSITION_ABS_TIP");
             currentY += SliderMargin;
 
-            _citizenMaxDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MAX_DISTANCE"), MinCitizenMaxDistance, MaxCitizenMaxDistance, 100f, CitizenMaxDistance, distanceFormat);
+            _citizenMaxDistanceSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("MAX_DISTANCE"), MinCitizenMaxDistance, MaxCitizenMaxDistance, 1f, CitizenMaxDistance, distanceFormat);
             _citizenMaxDistanceSlider.eventValueChanged += (c, value) => CitizenMaxDistance = value;
             _citizenMaxDistanceSlider.parent.tooltip = Translations.Translate("MAX_DISTANCE_TIP");
             currentY += SliderMargin;

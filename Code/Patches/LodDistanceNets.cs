@@ -18,9 +18,8 @@ namespace VisibilityControl.Patches
     {
         /// <summary>
         /// Minimum permitted network LOD visiblity distance.
-        /// This matches the minimum bounds check of 100f for networks in the game's code.
         /// </summary>
-        internal const float MinNetDistance = 100f;
+        internal const float MinNetDistance = 1f;
 
         /// <summary>
         /// Maximum permitted LOD visibility distance.
@@ -29,6 +28,7 @@ namespace VisibilityControl.Patches
 
         /// <summary>
         /// Default minimum network LOD distance.
+        /// This matches the minimum bounds check of 100f for networks in the game's code.
         /// </summary>
         internal const float DefaultNetMinDistance = 100f;
 

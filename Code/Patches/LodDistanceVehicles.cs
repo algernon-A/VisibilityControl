@@ -18,9 +18,8 @@ namespace VisibilityControl.Patches
     {
         /// <summary>
         /// Minimum permitted vehicle LOD visiblity distance.
-        /// This matches the minimum bounds check of 100f for vehicle in the game's code.
         /// </summary>
-        internal const float MinVehicleDistance = 100f;
+        internal const float MinVehicleDistance = 1;
 
         /// <summary>
         /// Maximum permitted LOD visibility distance.
@@ -29,6 +28,7 @@ namespace VisibilityControl.Patches
 
         /// <summary>
         /// Default minimum vehicle LOD distance.
+        /// This matches the minimum bounds check of 100f for vehicle in the game's code.
         /// </summary>
         internal const float DefaultVehicleMinDistance = 100f;
 
