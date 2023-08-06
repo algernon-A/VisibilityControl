@@ -87,17 +87,25 @@ namespace VisibilityControl
                     s_currentMode = value;
 
                     // Refresh all visibility settings.
-                    LodDistanceBuildings.RefreshVisibility();
-                    LodDistanceNets.RefreshVisibility();
-                    LodDistanceTrees.RefreshVisibility();
-                    LodDistanceProps.RefreshVisibility();
-                    RefreshLODs<VehicleInfo>();
-                    RefreshLODs<CitizenInfo>();
+                    RefreshAll();
 
                     // Update fee camera button.
                     UpdateFreeCameraButton();
                 }
             }
+        }
+
+        /// <summary>
+        /// Refreshes all visibility settings.
+        /// </summary>
+        internal static void RefreshAll()
+        {
+            LodDistanceBuildings.RefreshVisibility();
+            LodDistanceNets.RefreshVisibility();
+            LodDistanceTrees.RefreshVisibility();
+            LodDistanceProps.RefreshVisibility();
+            RefreshLODs<VehicleInfo>();
+            RefreshLODs<CitizenInfo>();
         }
 
         /// <summary>

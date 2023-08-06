@@ -51,6 +51,11 @@ namespace VisibilityControl
             {
                 CurrentMode = OverrideMode.Vanilla;
             }
+            else
+            {
+                // Refresh all visibility settings.
+                RefreshAll();
+            }
 
             ScanPrefabs();
         }
