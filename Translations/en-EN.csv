@@ -10,6 +10,7 @@
 "OPTIONS_NETS","Networks","Options panel group title."
 "OPTIONS_VEHICLES","Vehicles","Options panel group title."
 "OPTIONS_CITIZENS","Citizens","Options panel group title."
+"LOAD_VANILLA","Use vanilla mode by default when loading a game","Checkbox in options panel."
 "MAX_DISTANCE","Maximum visibility distance","Slider in options panel."
 "MAX_DISTANCE_TIP","This is the maximum range at which these items will be visible.","Slider tooltop in options panel."
 "FALLBACK_DISTANCE","Fallback maximum visibility distance","Slider in options panel."

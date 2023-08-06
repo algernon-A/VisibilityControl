@@ -35,6 +35,12 @@ namespace VisibilityControl
         public PropTransparencyRecord PropTransparency { get; set; } = new PropTransparencyRecord();
 
         /// <summary>
+        /// Gets or sets a value indicating whether vanilla mode should be enabled by default when loading a save.
+        /// </summary>
+        [XmlElement("LoadVanilla")]
+        public bool LoadVanilla { get => Loading.LoadVanilla; set => Loading.LoadVanilla = value; }
+
+        /// <summary>
         /// Gets or sets settings for LOD distance adjustment.
         /// </summary>
         [XmlElement("LodDistance")]

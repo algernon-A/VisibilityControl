@@ -10,12 +10,18 @@ namespace VisibilityControl
     using ColossalFramework.UI;
     using ICities;
     using VisibilityControl.AdditiveShader;
+    using static PrefabManager;
 
     /// <summary>
     /// Main loading class: the mod runs from here.
     /// </summary>
     public sealed class Loading : PatcherLoadingBase<OptionsPanel, PatcherBase>
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether vanilla mode should be enabled by default when loading a save.
+        /// </summary>
+        internal static bool LoadVanilla { get; set; } = false;
+
         /// <summary>
         /// Gets a list of permitted loading modes.
         /// </summary>
@@ -40,7 +46,13 @@ namespace VisibilityControl
         {
             base.LoadedActions(mode);
 
-            PrefabManager.ScanPrefabs();
+            // Apply vanilla settings if option is set.
+            if (LoadVanilla)
+            {
+                CurrentMode = OverrideMode.Vanilla;
+            }
+
+            ScanPrefabs();
         }
     }
 }

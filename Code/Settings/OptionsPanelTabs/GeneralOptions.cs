@@ -53,8 +53,17 @@ namespace VisibilityControl
             loggingCheck.eventCheckChanged += (c, isChecked) => { Logging.DetailLogging = isChecked; };
             currentY += loggingCheck.height + GroupMargin;
 
-            // Hotkey options.
+            // Vanilla on mode.
             float headerWidth = OptionsPanelManager<OptionsPanel>.PanelWidth - (Margin * 2f);
+            UISpacers.AddOptionsSpacer(panel, Margin, currentY, headerWidth);
+            currentY += TitleMargin;
+
+            UICheckBox loadVanillaCheck = UICheckBoxes.AddPlainCheckBox(panel, LeftMargin, currentY, Translations.Translate("LOAD_VANILLA"));
+            loadVanillaCheck.isChecked = Loading.LoadVanilla;
+            loadVanillaCheck.eventCheckChanged += (c, isChecked) => { Loading.LoadVanilla = isChecked; };
+            currentY += loadVanillaCheck.height + GroupMargin;
+
+            // Hotkey options.
             UISpacers.AddTitleSpacer(panel, Margin, currentY, headerWidth, Translations.Translate("HOTKEYS"));
             currentY += TitleMargin;
 
