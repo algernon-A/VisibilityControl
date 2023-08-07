@@ -1,3 +1,5 @@
+Version 0.9.3 -
+
 - Add option to load into game with vanilla settings enabled by default
 - Decrease minimimum LOD distances to 1
 
