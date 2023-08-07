@@ -10,6 +10,7 @@
 "OPTIONS_NETS","ネットワーク","Options panel group title."
 "OPTIONS_VEHICLES","車両","Options panel group title."
 "OPTIONS_CITIZENS","住民","Options panel group title."
+"LOAD_VANILLA","ゲームのロード時にデフォルトでバニラモードを使用","Checkbox in options panel."
 "MAX_DISTANCE","最大の表示距離","Slider in options panel."
 "MAX_DISTANCE_TIP","これらのオブジェクトが表示される最大範囲です。","Slider tooltop in options panel."
 "FALLBACK_DISTANCE","代替え用の最大の表示距離","Slider in options panel."
