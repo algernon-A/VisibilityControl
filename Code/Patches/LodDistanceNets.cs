@@ -40,7 +40,7 @@ namespace VisibilityControl.Patches
         /// <summary>
         /// Minimum permitted network LOD distance multiplier.
         /// </summary>
-        internal const float MinNetMult = 0.5f;
+        internal const float MinNetMult = 0.1f;
 
         /// <summary>
         /// Maximum permitted network LOD distance multiplier.

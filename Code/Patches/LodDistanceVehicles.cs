@@ -40,7 +40,7 @@ namespace VisibilityControl.Patches
         /// <summary>
         /// Minimum permitted vehicle LOD distance multiplier.
         /// </summary>
-        internal const float MinVehicleMult = 0.5f;
+        internal const float MinVehicleMult = 0.1f;
 
         /// <summary>
         /// Maximum permitted vehicle LOD distance multiplier.

@@ -115,7 +115,7 @@ namespace VisibilityControl
             _netMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
             currentY += SliderMargin;
 
-            _netMultSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinNetMult, MaxNetMult, 0.5f, NetMultiplier, multiplierFormat);
+            _netMultSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinNetMult, MaxNetMult, 0.1f, NetMultiplier, multiplierFormat);
             _netMultSlider.eventValueChanged += (c, value) => NetMultiplier = value;
             _netMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
             currentY += SliderMargin;
@@ -129,7 +129,7 @@ namespace VisibilityControl
             _vehicleMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
             currentY += SliderMargin;
 
-            _vehicleMultSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinVehicleMult, MaxVehicleMult, 0.5f, VehicleMultiplier, multiplierFormat);
+            _vehicleMultSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinVehicleMult, MaxVehicleMult, 0.1f, VehicleMultiplier, multiplierFormat);
             _vehicleMultSlider.eventValueChanged += (c, value) => VehicleMultiplier = value;
             _vehicleMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
             currentY += SliderMargin;
