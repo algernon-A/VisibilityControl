@@ -1,3 +1,6 @@
+- Add LOD distance patching to BuildingInfoBase
+
+
 Version 0.9.4 -
 
 - Decrease minimum network and vehicle multipliers to 10%

@@ -5,6 +5,7 @@
 
 namespace VisibilityControl.Patches
 {
+    using System;
     using HarmonyLib;
     using UnityEngine;
     using static PrefabManager;
@@ -104,12 +105,37 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="BuildingInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="BuildingInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="BuildingInfo"/> instance.</param>
         [HarmonyPatch(typeof(BuildingInfo), nameof(BuildingInfo.RefreshLevelOfDetail))]
         [HarmonyPostfix]
         private static void BuildingRefreshLOD(BuildingInfo __instance)
+        {
+            // Don't do anything if using vanilla settings.
+            if (CurrentMode == OverrideMode.Vanilla)
+            {
+                return;
+            }
+
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
+            // Only applies to instances with LODs.
+            if (__instance.m_lodMesh != null)
+            {
+                __instance.m_minLodDistance = overrideDistance < 0f ? Mathf.Max(s_buildingMinDistance, __instance.m_minLodDistance * s_buildingMult) : overrideDistance;
+                __instance.m_maxLodDistance = overrideDistance < 0f ? Mathf.Max(s_buildingMinDistance, __instance.m_maxLodDistance * s_buildingMult) : overrideDistance;
+            }
+        }
+
+        /// <summary>
+        /// Harmony postfix to <see cref="BuildingInfoBase.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
+        /// </summary>
+        /// <param name="__instance"><see cref="BuildingInfoBase"/> instance.</param>
+        [HarmonyPatch(typeof(BuildingInfoBase), nameof(BuildingInfoBase.RefreshLevelOfDetail), new Type[] { typeof(Vector3) })]
+        [HarmonyPostfix]
+        private static void BuildingInfoBaseRefreshLOD(BuildingInfoBase __instance)
         {
             // Don't do anything if using vanilla settings.
             if (CurrentMode == OverrideMode.Vanilla)
