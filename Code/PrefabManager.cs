@@ -276,7 +276,7 @@ namespace VisibilityControl
             // Local reference.
             RenderManager renderManager = Singleton<RenderManager>.instance;
 
-            // Iterate throuh all render groups.
+            // Iterate through all render groups.
             foreach (RenderGroup renderGroup in renderManager.m_groups)
             {
                 // Null check.
@@ -286,6 +286,19 @@ namespace VisibilityControl
                     renderGroup.SetLayerDataDirty(layer);
                     renderGroup.UpdateMeshData();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sets the initial visibility mode.
+        /// </summary>
+        internal static void SetInitialMode()
+        {
+            // Apply vanilla mode if set; otherwise, leave as mod default.
+            if (Loading.LoadVanilla)
+            {
+                // Don't use setter at this point; just set field directly.
+                s_currentMode = OverrideMode.Vanilla;
             }
         }
 

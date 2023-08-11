@@ -39,23 +39,25 @@ namespace VisibilityControl
         }
 
         /// <summary>
+        /// Performs any actions upon successful creation of the mod.
+        /// E.g. Can be used to patch any other mods.
+        /// </summary>
+        /// <param name="loading">Loading mode (e.g. game or editor).</param>
+        protected override void CreatedActions(ILoading loading)
+        {
+            base.CreatedActions(loading);
+
+            // Set initial visibility mode.
+            SetInitialMode();
+        }
+
+        /// <summary>
         /// Performs any actions upon successful level loading completion.
         /// </summary>
         /// <param name="mode">Loading mode (e.g. game, editor, scenario, etc.).</param>
         protected override void LoadedActions(LoadMode mode)
         {
             base.LoadedActions(mode);
-
-            // Apply vanilla settings if option is set.
-            if (LoadVanilla)
-            {
-                CurrentMode = OverrideMode.Vanilla;
-            }
-            else
-            {
-                // Refresh all visibility settings.
-                RefreshAll();
-            }
 
             ScanPrefabs();
         }
