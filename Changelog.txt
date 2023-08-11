@@ -1,7 +1,7 @@
 Version 0.9.4 -
 
 - Decrease minimum network and vehicle multipliers to 10%
-- Remove post-load RenderGroup refresh.
+- Remove post-load RenderGroup refresh
 
 
 Version 0.9.3 -
