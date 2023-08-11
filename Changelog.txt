@@ -1,4 +1,4 @@
-- Add LOD distance patching to BuildingInfoBase
+- Add info base LOD distance patching to buildings and vehicles
 
 
 Version 0.9.4 -

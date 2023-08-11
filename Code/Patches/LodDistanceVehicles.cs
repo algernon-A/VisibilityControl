@@ -117,6 +117,29 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
+        /// Harmony postfix to <see cref="VehicleInfoBase.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
+        /// </summary>
+        /// <param name="__instance"><see cref="VehicleInfoBase"/> instance.</param>
+        [HarmonyPatch(typeof(VehicleInfoBase), nameof(VehicleInfoBase.RefreshLevelOfDetail))]
+        [HarmonyPostfix]
+        private static void VehicleSubRefreshLOD(VehicleInfoBase __instance)
+        {
+            // Don't do anything if using vanilla settings.
+            if (CurrentMode == OverrideMode.Vanilla)
+            {
+                return;
+            }
+
+            // Get current override distance.
+            float overrideDistance = OverrideDistance;
+
+            __instance.m_lodRenderDistance = overrideDistance < 0f ? Mathf.Max(s_vehicleMinDistance, __instance.m_lodRenderDistance * s_vehicleMult) : overrideDistance;
+
+            // Exclude vehicle max render distance from LOD effects.
+            __instance.m_maxRenderDistance = Mathf.Max(s_vehicleMinDistance, __instance.m_maxRenderDistance * s_vehicleMult, overrideDistance);
+        }
+
+        /// <summary>
         /// Harmony postfix to <see cref="VehicleInfoSub.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="VehicleInfoSub"/> instance.</param>
