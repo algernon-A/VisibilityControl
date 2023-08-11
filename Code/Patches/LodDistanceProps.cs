@@ -18,7 +18,7 @@ namespace VisibilityControl.Patches
     internal static class LodDistanceProps
     {
         /// <summary>
-        /// Minimum permitted prop LOD visiblity distance.
+        /// Minimum permitted prop LOD visibility distance.
         /// </summary>
         internal const float MinPropDistance = 1;
 
@@ -130,7 +130,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="PropInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="PropInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="PropInfo"/> instance.</param>
         [HarmonyPatch(typeof(PropInfo), nameof(PropInfo.RefreshLevelOfDetail))]

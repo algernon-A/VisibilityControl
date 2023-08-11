@@ -95,7 +95,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="CitizenInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="CitizenInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="CitizenInfo"/> instance.</param>
         [HarmonyPatch(nameof(CitizenInfo.RefreshLevelOfDetail))]

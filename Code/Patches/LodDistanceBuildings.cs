@@ -17,7 +17,7 @@ namespace VisibilityControl.Patches
     internal static class LodDistanceBuildings
     {
         /// <summary>
-        /// Minimum permitted building LOD visiblity distance.
+        /// Minimum permitted building LOD visibility distance.
         /// </summary>
         internal const float MinBuildingDistance = 1f;
 
@@ -129,7 +129,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="BuildingInfoSub.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="BuildingInfoSub.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="BuildingInfoSub"/> instance.</param>
         [HarmonyPatch(typeof(BuildingInfoSub), nameof(BuildingInfoSub.RefreshLevelOfDetail))]
@@ -154,7 +154,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="BuildingAI.PopulateGroupData"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="BuildingAI.PopulateGroupData"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="BuildingAI"/> instance.</param>
         /// <param name="layer">Render group layer.</param>

@@ -17,7 +17,7 @@ namespace VisibilityControl.Patches
     internal static class LodDistanceVehicles
     {
         /// <summary>
-        /// Minimum permitted vehicle LOD visiblity distance.
+        /// Minimum permitted vehicle LOD visibility distance.
         /// </summary>
         internal const float MinVehicleDistance = 1;
 
@@ -94,7 +94,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="VehicleInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="VehicleInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="VehicleInfo"/> instance.</param>
         [HarmonyPatch(typeof(VehicleInfo), nameof(VehicleInfo.RefreshLevelOfDetail))]
@@ -117,7 +117,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="VehicleInfoSub.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="VehicleInfoSub.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="VehicleInfoSub"/> instance.</param>
         [HarmonyPatch(typeof(VehicleInfoSub), nameof(VehicleInfoSub.RefreshLevelOfDetail))]

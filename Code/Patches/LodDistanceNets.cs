@@ -17,7 +17,7 @@ namespace VisibilityControl.Patches
     internal static class LodDistanceNets
     {
         /// <summary>
-        /// Minimum permitted network LOD visiblity distance.
+        /// Minimum permitted network LOD visibility distance.
         /// </summary>
         internal const float MinNetDistance = 1f;
 
@@ -152,7 +152,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="NetManager.PopulateGroupData"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="NetManager.PopulateGroupData"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="layer">Render group layer.</param>
         /// <param name="maxInstanceDistance">Maximum instance visibility distance.</param>

@@ -17,7 +17,7 @@ namespace VisibilityControl.Patches
     internal static class LodDistanceTrees
     {
         /// <summary>
-        /// Minimum permitted LOD visiblity distance.
+        /// Minimum permitted LOD visibility distance.
         /// </summary>
         internal const float MinTreeDistance = 0f;
 
@@ -64,7 +64,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="TreeInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="TreeInfo.RefreshLevelOfDetail"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="TreeInfo"/> instance.</param>
         [HarmonyPatch(typeof(TreeInfo), nameof(TreeInfo.RefreshLevelOfDetail))]
@@ -84,7 +84,7 @@ namespace VisibilityControl.Patches
         }
 
         /// <summary>
-        /// Harmony postfix to <see cref="TreeManager.PopulateGroupData"/> to apply custom LOD visibility distance modifers.
+        /// Harmony postfix to <see cref="TreeManager.PopulateGroupData"/> to apply custom LOD visibility distance modifiers.
         /// </summary>
         /// <param name="__instance"><see cref="TreeManager"/> instance.</param>
         /// <param name="layer">Render group layer.</param>
