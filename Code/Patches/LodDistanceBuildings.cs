@@ -41,7 +41,7 @@ namespace VisibilityControl.Patches
         /// <summary>
         /// Minimum permitted building LOD distance multiplier.
         /// </summary>
-        internal const float MinBuildingMult = 0.5f;
+        internal const float MinBuildingMult = 0.1f;
 
         /// <summary>
         /// Maximum permitted building LOD distance multiplier.

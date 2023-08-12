@@ -1,3 +1,4 @@
+- Decrease minimum building multiplier to 10%
 - Add info base LOD distance patching to buildings and vehicles
 
 

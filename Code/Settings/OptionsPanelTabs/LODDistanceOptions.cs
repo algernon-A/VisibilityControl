@@ -101,7 +101,7 @@ namespace VisibilityControl
             _buildingMinDistanceSlider.parent.tooltip = Translations.Translate("MIN_DISTANCE_TIP");
             currentY += SliderMargin;
 
-            _buildingMultSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinBuildingMult, MaxBuildingMult, 0.5f, BuildingMultiplier, multiplierFormat);
+            _buildingMultSlider = UISliders.AddPlainSliderWithValue(scrollPanel, LeftMargin, currentY, Translations.Translate("DISTANCE_MULT"), MinBuildingMult, MaxBuildingMult, 0.1f, BuildingMultiplier, multiplierFormat);
             _buildingMultSlider.eventValueChanged += (c, value) => BuildingMultiplier = value;
             _buildingMultSlider.parent.tooltip = Translations.Translate("DISTANCE_MULT_TIP");
             currentY += SliderMargin;
