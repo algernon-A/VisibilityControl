@@ -10,6 +10,7 @@
 "OPTIONS_NETS","网络","Options panel group title."
 "OPTIONS_VEHICLES","载具","Options panel group title."
 "OPTIONS_CITIZENS","市民","Options panel group title."
+"LOAD_VANILLA","加载存档时默认使用原版模式。","Checkbox in options panel."
 "MAX_DISTANCE","最大可见距离","Slider in options panel."
 "MAX_DISTANCE_TIP","这是这些项目的最大可见距离。","Slider tooltop in options panel."
 "FALLBACK_DISTANCE","重置为最大可见距离","Slider in options panel."
