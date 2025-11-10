@@ -137,14 +137,8 @@ namespace VisibilityControl.Patches
         [HarmonyPostfix]
         private static void PropRefreshLOD(PropInfo __instance)
         {
-            // Don't do anything if using vanilla settings.
-            if (CurrentMode == OverrideMode.Vanilla)
-            {
-                return;
-            }
-
             // Get current override distance.
-            float overrideDistance = OverrideDistance;
+            float overrideDistance = CurrentMode == OverrideMode.Vanilla ? OverrideDistance : -1f;
 
             // Decal or prop?
             if (__instance.m_isDecal && __instance.m_material && __instance.m_material.shader.name.Equals("Custom/Props/Decal/Blend"))
@@ -161,10 +155,11 @@ namespace VisibilityControl.Patches
             else
             {
                 // Non-decal prop.
-                __instance.m_lodRenderDistance = overrideDistance < 0 ? Mathf.Max(s_propMinDistance, __instance.m_lodRenderDistance * s_propMult) : overrideDistance;
+                float propMult = CurrentMode == OverrideMode.Vanilla ? 1.0f : s_propMult;
+                __instance.m_lodRenderDistance = overrideDistance < 0 ? Mathf.Max(s_propMinDistance, __instance.m_lodRenderDistance * propMult) : overrideDistance;
 
                 // Apply override distance as max, otherwise props won't be visible at all in LOD mode.
-                __instance.m_maxRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_maxRenderDistance * s_propMult, overrideDistance);
+                __instance.m_maxRenderDistance = Mathf.Max(s_propMinDistance, __instance.m_maxRenderDistance * propMult, overrideDistance);
             }
         }
 
