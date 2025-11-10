@@ -59,7 +59,11 @@ namespace VisibilityControl
         {
             base.LoadedActions(mode);
 
+            // Scan for additive shader prefabs.
             ScanPrefabs();
+
+            // Reset net visibility.
+            Patches.LodDistanceNets.RefreshVisibility();
         }
     }
 }
