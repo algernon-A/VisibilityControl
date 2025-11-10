@@ -1,3 +1,8 @@
+Version 1.0 -
+
+Rework prop LOD refreshing when using vanilla override display mode
+
+
 Version 0.9.5 -
 
 - Decrease minimum building multiplier to 10%
