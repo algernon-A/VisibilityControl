@@ -1,3 +1,8 @@
+Version 1.0.1 - 
+
+Skip net visibility refresh on loading (avoids obscure race condition with some custom content)
+
+
 Version 1.0 -
 
 Rework prop LOD refreshing when using vanilla override display mode
